@@ -105,7 +105,7 @@ struct BrainDumpView: View {
         let items = parsed
         guard !items.isEmpty else { return }
         withAnimation {
-            TaskStore.addToInbox(items, context: context)
+            _ = TaskStore.addToInbox(items, context: context)
         }
         draft = ""
         justAdded += 1

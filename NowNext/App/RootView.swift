@@ -10,8 +10,6 @@ struct RootView: View {
 
     @AppStorage(SettingsKey.hasOnboarded) private var hasOnboarded = false
 
-    private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
     init() {
         RootView.configureTabBar()
     }
@@ -43,8 +41,12 @@ struct RootView: View {
         .tint(Theme.text)
         .preferredColorScheme(.dark)
         .sensoryFeedback(.impact(weight: .light), trigger: router.tab)
-        .onReceive(ticker) { _ in
-            focus.tick(context: context)
+        .task {
+            // Once a second, let the focus timer wrap up a finished session.
+            while !Task.isCancelled {
+                focus.tick(context: context)
+                try? await Task.sleep(for: .seconds(1))
+            }
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {

@@ -130,7 +130,7 @@ textarea::placeholder{color:#8a8a8a}
 </div>
 
 <script>
-const S={tab:'today',limit:3,timer:null,summary:null,open:null,minutes:25,focusTask:2,nextId:7,
+const S={speed:1,tab:'today',limit:3,timer:null,summary:null,open:null,minutes:25,focusTask:2,nextId:7,
  tasks:[
   {id:1,t:'Reply to Coach Miller’s email',slot:'now',est:10,done:false,steps:[],tracked:0},
   {id:2,t:'Draft the proposal intro',slot:'now',est:30,done:false,steps:[{t:'Open the doc',d:true},{t:'Write 3 bullet points',d:false},{t:'Turn bullets into a paragraph',d:false}],tracked:720},
@@ -209,14 +209,14 @@ function pie(frac,color,size){
   return `<svg class="pie" style="width:${size}px;height:${size}px" viewBox="0 0 220 220" aria-hidden="true"><circle cx="${c}" cy="${c}" r="${r}" fill="#141414"/>${w}<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="#fff" stroke-width="2"/><circle cx="${c}" cy="${c}" r="8" fill="#050505" stroke="#fff" stroke-width="2"/></svg>`;
 }
 const fmt=s=>{s=Math.ceil(s);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
-function remaining(){const T=S.timer;return Math.max(0,T.planned-(T.acc+(T.running?(Date.now()-T.seg)/1000*30:0)))}
+function remaining(){const T=S.timer;return Math.max(0,T.planned-(T.acc+(T.running?(Date.now()-T.seg)/1000*S.speed:0)))}
 function focus(){
   if(S.timer){const T=S.timer,rem=remaining(),task=byId(T.task),step=task&&task.steps.find(s=>!s.d);
     return `<div class="label">${T.running?'Focusing':'Paused'}</div>${task?`<div style="font-size:19px;font-weight:800;text-transform:uppercase">${esc(task.t)}</div>`:''}
     ${pie(rem/T.planned,T.running?'#E3120B':'#9A9A9A',250)}<div class="clock">${fmt(rem)}</div>
     ${step?`<div class="card row" style="margin-top:14px"><button class="plate" onclick="stepDone()"></button><div><div class="label" style="margin:0">Next step</div><div class="t" style="font-size:17px;font-weight:600">${esc(step.t)}</div></div></div>`:''}
     <button class="btn secondary" style="width:100%;margin-top:8px" onclick="S.timer.planned+=300;render()">＋ Add 5 minutes</button>
-    <div class="muted" style="text-align:center;margin-top:10px;font-size:13px">Preview runs at 30× speed.</div>`}
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px"><span class="muted" style="font-size:13px;align-self:center">Preview speed</span><button class="chip" style="cursor:pointer;color:#fff;${S.speed===1?'background:var(--red);border:2px solid #fff':''}" onclick="setSpeed(1)">Real time</button><button class="chip" style="cursor:pointer;color:#fff;${S.speed===30?'background:var(--red);border:2px solid #fff':''}" onclick="setSpeed(30)">Demo 30×</button></div>`}
   if(S.summary){const s=S.summary;return `<div style="text-align:center;margin-top:24px">${shield(72)}</div><div style="font-size:40px;font-weight:900;text-transform:uppercase;text-align:center;line-height:1.05;margin:12px 0 16px">Nice. That counts.</div>
     <div class="card stat"><div class="v">${Math.max(1,Math.round(s.sec/60))}m</div><div class="l">Focused this session</div></div>${s.title?`<div class="chips"><span class="chip">◎ ${esc(s.title)}</span></div>`:''}
     <button class="btn secondary" style="width:100%;margin-top:10px" onclick="S.minutes=5;S.focusTask=S.summary.task;S.summary=null;start()">Keep going: 5 more minutes</button>`}
@@ -234,7 +234,8 @@ function focusBar(){
   return `<div class="bar"><button class="btn primary" onclick="start()">▶ Start ${S.minutes}-min focus</button></div>`;
 }
 function start(){S.timer={planned:S.minutes*60,acc:0,seg:Date.now(),running:true,task:S.focusTask};S.tab='focus';render()}
-function pause(){const T=S.timer;T.acc+=(Date.now()-T.seg)/1000*30;T.running=false;render()}
+function setSpeed(v){const T=S.timer;if(T&&T.running){T.acc+=(Date.now()-T.seg)/1000*S.speed;T.seg=Date.now()}S.speed=v;render()}
+function pause(){const T=S.timer;T.acc+=(Date.now()-T.seg)/1000*S.speed;T.running=false;render()}
 function resume(){S.timer.seg=Date.now();S.timer.running=true;render()}
 function endFocus(){const T=S.timer,sec=T.planned-remaining(),task=byId(T.task);if(task)task.tracked+=sec;S.summary={sec,task:T.task,title:task?task.t:''};S.timer=null;render()}
 function stepDone(){const t=byId(S.timer.task),s=t.steps.find(s=>!s.d);if(s)s.d=true;render()}

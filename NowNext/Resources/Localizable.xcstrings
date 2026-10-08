@@ -1,7 +1,627 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ left" : {
 
+    },
+    "%@, one-time purchase." : {
+
+    },
+    "%lld min" : {
+
+    },
+    "%lld minutes %lld seconds remaining" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld minutes %2$lld seconds remaining"
+          }
+        }
+      }
+    },
+    "%lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "%lld/%lld steps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld steps"
+          }
+        }
+      }
+    },
+    "%lldh" : {
+
+    },
+    "%lldh %lldm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lldh %2$lldm"
+          }
+        }
+      }
+    },
+    "%lldm" : {
+
+    },
+    "5 more min" : {
+
+    },
+    "A “30 minute” task is closer to %lld for you." : {
+
+    },
+    "A blank page" : {
+
+    },
+    "A rough guess is fine. NowNext compares it with the time you actually focus." : {
+
+    },
+    "About" : {
+
+    },
+    "Add 5 minutes" : {
+
+    },
+    "Add a step…" : {
+
+    },
+    "Add a time guess to tasks and focus on them. After %lld, you'll see how your guesses compare with reality." : {
+
+    },
+    "Add step" : {
+
+    },
+    "Add task" : {
+
+    },
+    "Add to Brain Dump" : {
+
+    },
+    "Added %lld items to your brain dump." : {
+
+    },
+    "Added to your brain dump." : {
+
+    },
+    "Anything you capture waits here until you sort it into Now, Next or Later." : {
+
+    },
+    "Based on %lld tasks with a guess and at least 1 minute of focus." : {
+
+    },
+    "Brain dump" : {
+
+    },
+    "Brain Dump" : {
+
+    },
+    "Break big tasks into silly-small steps, guess the time, then watch it shrink on a visual timer." : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Capture" : {
+
+    },
+    "Capture %lld" : {
+
+    },
+    "Choose up to three things for today. Just three." : {
+
+    },
+    "Close" : {
+
+    },
+    "Complete Task" : {
+
+    },
+    "Daily “pick your Now”" : {
+
+    },
+    "Day" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Delete all data" : {
+
+    },
+    "Delete all tasks and focus history?" : {
+
+    },
+    "Delete everything" : {
+
+    },
+    "Delete task" : {
+
+    },
+    "Delete this task?" : {
+
+    },
+    "Done" : {
+
+    },
+    "Done today" : {
+
+    },
+    "Done, last 7 days" : {
+
+    },
+    "Dump it all out" : {
+
+    },
+    "End" : {
+
+    },
+    "End and save my time" : {
+
+    },
+    "End this session?" : {
+
+    },
+    "Everything else stays free: Brain Dump, Today, Tiny Steps, the focus timer, widgets and Live Activities." : {
+
+    },
+    "First step: %@" : {
+
+    },
+    "First tiny step…" : {
+
+    },
+    "Focus" : {
+
+    },
+    "Focus by day" : {
+
+    },
+    "Focus minutes" : {
+
+    },
+    "Focus minutes by day and tasks finished each week." : {
+
+    },
+    "Focus minutes per day for the last 7 days" : {
+
+    },
+    "Focus on this" : {
+
+    },
+    "Focus session for “%@” is done. Take a breath." : {
+
+    },
+    "Focused %@" : {
+
+    },
+    "Focused so far" : {
+
+    },
+    "Focused this session" : {
+
+    },
+    "Focused, last 7 days" : {
+
+    },
+    "Focusing" : {
+
+    },
+    "Get every task and worry out of your head. Paste a list and each line becomes a task. Sort later." : {
+
+    },
+    "Get everything out of your head first. Then pick just a few things for Now." : {
+
+    },
+    "Guess %@" : {
+
+    },
+    "Heads up" : {
+
+    },
+    "Help & Support" : {
+
+    },
+    "How long" : {
+
+    },
+    "How your time guesses compare with reality, plus a personal multiplier for planning." : {
+
+    },
+    "If it feels like 30 minutes, plan for about %lld." : {
+
+    },
+    "in Progress" : {
+
+    },
+    "Insights" : {
+
+    },
+    "Insights and time-sense calibration. One-time purchase." : {
+
+    },
+    "Insights is part of NowNext Pro, a one-time unlock." : {
+
+    },
+    "Just focus (no task)" : {
+
+    },
+    "Keep going" : {
+
+    },
+    "Keep going: 5 more minutes" : {
+
+    },
+    "Keeps NowNext ad-free, account-free and private." : {
+
+    },
+    "Later" : {
+
+    },
+    "Less time" : {
+
+    },
+    "Loading price from the App Store…" : {
+
+    },
+    "Mark done" : {
+
+    },
+    "Mark not done" : {
+
+    },
+    "Max tasks in Now" : {
+
+    },
+    "Minutes" : {
+
+    },
+    "Minutes focused each day and tasks finished each week." : {
+
+    },
+    "More time" : {
+
+    },
+    "Move to %@" : {
+
+    },
+    "New task" : {
+
+    },
+    "Next" : {
+
+    },
+    "Next step" : {
+
+    },
+    "Nice. That counts." : {
+
+    },
+    "No accounts. No tracking. Data stays on this device." : {
+
+    },
+    "No focus sessions this week yet. Even 5 minutes shows up here." : {
+
+    },
+    "No previous purchase was found for this Apple Account." : {
+
+    },
+    "None" : {
+
+    },
+    "Not medical advice" : {
+
+    },
+    "Notes (optional)" : {
+
+    },
+    "Nothing in Now yet." : {
+
+    },
+    "Nothing to add." : {
+
+    },
+    "Notifications are off for NowNext. Turn them on in the Settings app." : {
+
+    },
+    "Now" : {
+
+    },
+    "Now %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Now %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "Now holds up to three things. Everything else waits in Next or Later, out of the way." : {
+
+    },
+    "Now is full" : {
+
+    },
+    "NowNext" : {
+
+    },
+    "NowNext is a planning and focus tool. It is not a medical device and does not diagnose or treat ADHD or any other condition. It's not a substitute for care from a qualified professional." : {
+
+    },
+    "NowNext Pro" : {
+
+    },
+    "NowNext, in Progress" : {
+
+    },
+    "Of your guess" : {
+
+    },
+    "OK" : {
+
+    },
+    "On target" : {
+
+    },
+    "One gentle nudge a day." : {
+
+    },
+    "Open Brain Dump (%lld)" : {
+
+    },
+    "Opens task details" : {
+
+    },
+    "Pause" : {
+
+    },
+    "Paused" : {
+
+    },
+    "Pay once. Yours forever. No subscription." : {
+
+    },
+    "Pick three for Now" : {
+
+    },
+    "Pick up to %lld things from Next or your Brain Dump." : {
+
+    },
+    "Pick your Now" : {
+
+    },
+    "Planner" : {
+
+    },
+    "Privacy Policy" : {
+
+    },
+    "Pro" : {
+
+    },
+    "Pro feature" : {
+
+    },
+    "Pro is unlocked. Thank you!" : {
+
+    },
+    "Pro unlocked" : {
+
+    },
+    "Purchase" : {
+
+    },
+    "Put it in" : {
+
+    },
+    "Put something in Now or Next to focus on it here." : {
+
+    },
+    "Reminders" : {
+
+    },
+    "Remove step %@" : {
+
+    },
+    "Reopen" : {
+
+    },
+    "Restore" : {
+
+    },
+    "Restore Purchases" : {
+
+    },
+    "Resume" : {
+
+    },
+    "See how your time guesses compare with reality, so plans match your actual day." : {
+
+    },
+    "Settings" : {
+
+    },
+    "Short is fine. Starting is the hard part." : {
+
+    },
+    "Show the intro again" : {
+
+    },
+    "Skip" : {
+
+    },
+    "Start %lld-min focus" : {
+
+    },
+    "Start a Brain Dump" : {
+
+    },
+    "Start my dump" : {
+
+    },
+    "Step %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "Stuck? Make the first step so small it feels silly, like “open the laptop.”" : {
+
+    },
+    "Support an indie app" : {
+
+    },
+    "Swipe right to send to Now. Swipe left for Next or Later." : {
+
+    },
+    "Take a break" : {
+
+    },
+    "Task" : {
+
+    },
+    "Task ID" : {
+
+    },
+    "tasks measured" : {
+
+    },
+    "Tasks take you about %@ longer than you guess." : {
+
+    },
+    "Terms of Use" : {
+
+    },
+    "Thanks for supporting NowNext." : {
+
+    },
+    "That's the point. Finish one before adding another." : {
+
+    },
+    "The App Store isn't reachable right now. Please try again in a moment." : {
+
+    },
+    "The time you've focused so far still counts." : {
+
+    },
+    "This can't be undone. Your data only lives on this device." : {
+
+    },
+    "Thought" : {
+
+    },
+    "Three is a good start. Fewer things in Now means less overwhelm and more finishing." : {
+
+    },
+    "Time" : {
+
+    },
+    "Time guess" : {
+
+    },
+    "Time-sense calibration" : {
+
+    },
+    "Time's up" : {
+
+    },
+    "Timer" : {
+
+    },
+    "Tiny steps" : {
+
+    },
+    "Tiny steps. Visible time." : {
+
+    },
+    "To sort" : {
+
+    },
+    "Today" : {
+
+    },
+    "Type anything. One thought per line. Don't organize yet." : {
+
+    },
+    "under 1m" : {
+
+    },
+    "Unlock %@" : {
+
+    },
+    "Unlock NowNext Pro" : {
+
+    },
+    "Unlock Pro" : {
+
+    },
+    "Unlocked" : {
+
+    },
+    "Untitled task" : {
+
+    },
+    "Version" : {
+
+    },
+    "What needs doing?" : {
+
+    },
+    "What you get" : {
+
+    },
+    "What's on your mind?" : {
+
+    },
+    "Where it lives" : {
+
+    },
+    "Working on" : {
+
+    },
+    "You finish about %@ faster than you guess." : {
+
+    },
+    "You've got %lld things in Now. Finish one or move one back to Next first." : {
+
+    },
+    "Your data" : {
+
+    },
+    "Your focus session is done. Take a breath." : {
+
+    },
+    "Your guess" : {
+
+    },
+    "Your guess: %@" : {
+
+    },
+    "Your guesses land within 10 percent of reality." : {
+
+    },
+    "Your head is clear" : {
+
+    },
+    "Your time sense" : {
+
+    }
   },
   "version" : "1.0"
 }
