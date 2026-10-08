@@ -68,7 +68,8 @@ final class CalendarService {
                 start: event.startDate,
                 end: event.endDate,
                 isAllDay: event.isAllDay,
-                source: .calendar(name: event.calendar?.title ?? String(localized: "Calendar"))
+                source: .calendar(name: event.calendar?.title ?? String(localized: "Calendar")),
+                externalID: event.eventIdentifier
             )
         }
     }

@@ -1,3 +1,4 @@
+import UIKit
 import SwiftUI
 
 /// Heater-style shield outline used by the badge logo.
@@ -62,15 +63,32 @@ struct ShieldBadge: View {
 }
 
 /// Wordmark lockup: the big red word, then "★ in Progress ★".
+/// "NOW ⚡ NEXT": all caps with a yellow bolt between the words, so it reads
+/// as two words. The bolt is an SF Symbol (yellow = highlight only).
+struct NowNextName: View {
+    var style: Theme.TextStyle = .wordmark
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        let size = style.scaledSize(for: UIContentSizeCategory(dynamicTypeSize))
+        let bolt = Text(Image(systemName: "bolt.fill"))
+            .font(.system(size: size * 0.4, weight: style.weight))
+            .foregroundStyle(Theme.yellow)
+            .baselineOffset(size * 0.34) // lifts the small bolt into the upper half of the capitals
+        Text("\(Text(verbatim: "NOW"))\(Text(verbatim: "\u{2009}"))\(bolt)\(Text(verbatim: "\u{2009}"))\(Text(verbatim: "NEXT"))")
+            .font(.system(size: size, weight: style.weight))
+            .accessibilityLabel("NowNext")
+    }
+}
+
 struct Wordmark: View {
-    var word: LocalizedStringKey = "NowNext"
     var tagline: LocalizedStringKey = "in Progress"
     var compact = false
 
     var body: some View {
         VStack(spacing: 2) {
-            Text(word)
-                .themeFont(compact ? .heroTitle : .wordmark)
+            NowNextName(style: compact ? .heroTitle : .wordmark)
                 .foregroundStyle(Theme.red)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)

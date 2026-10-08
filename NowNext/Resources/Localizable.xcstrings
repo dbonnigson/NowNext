@@ -4,6 +4,19 @@
     " " : {
 
     },
+    "%@" : {
+
+    },
+    "%@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
     "%@ · next one %@" : {
       "localizations" : {
         "en" : {
@@ -42,6 +55,16 @@
     },
     "%@, one-time purchase." : {
 
+    },
+    "%@%@%@%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@%3$@%4$@%5$@"
+          }
+        }
+      }
     },
     "%lld" : {
 
@@ -119,6 +142,9 @@
     "Add 5 minutes" : {
 
     },
+    "Add a prep task" : {
+
+    },
     "Add a step…" : {
 
     },
@@ -140,10 +166,16 @@
     "Add task" : {
 
     },
+    "Add to" : {
+
+    },
     "Add to Brain Dump" : {
 
     },
     "Added %lld items to your brain dump." : {
+
+    },
+    "Added from NowNext" : {
 
     },
     "Added in NowNext" : {
@@ -153,6 +185,9 @@
 
     },
     "All day" : {
+
+    },
+    "Also add to my calendar" : {
 
     },
     "Anything you capture waits here until you sort it into Now, Next or Later." : {
@@ -176,7 +211,16 @@
     "Calendar" : {
 
     },
+    "Calendar · %@" : {
+
+    },
+    "Calendar %@" : {
+
+    },
     "Calendar access is off" : {
+
+    },
+    "Calendar access is off. Turn it on in Settings › NowNext › Calendars." : {
 
     },
     "Cancel" : {
@@ -201,6 +245,9 @@
 
     },
     "Connect Calendar" : {
+
+    },
+    "Couldn't add to calendar" : {
 
     },
     "Countdown" : {
@@ -267,6 +314,9 @@
 
     },
     "Dump it all out" : {
+
+    },
+    "Edit event" : {
 
     },
     "Edit routine" : {
@@ -374,6 +424,9 @@
     "How routines work" : {
 
     },
+    "iCloud, Google, Outlook or any calendar on this iPhone" : {
+
+    },
     "If it feels like 30 minutes, plan for about %lld." : {
 
     },
@@ -404,6 +457,9 @@
     "in Progress" : {
 
     },
+    "Included" : {
+
+    },
     "Insights" : {
 
     },
@@ -422,6 +478,9 @@
     "Later" : {
 
     },
+    "Later today" : {
+
+    },
     "Less" : {
 
     },
@@ -429,9 +488,6 @@
 
     },
     "Loading price from the App Store…" : {
-
-    },
-    "Make a prep task" : {
 
     },
     "Mark done" : {
@@ -558,10 +614,16 @@
     "NowNext" : {
 
     },
+    "NowNext calendar" : {
+
+    },
     "NowNext is a planning and focus tool. It is not a medical device and does not diagnose or treat ADHD or any other condition. It's not a substitute for care from a qualified professional." : {
 
     },
     "NowNext Pro" : {
+
+    },
+    "NowNext task" : {
 
     },
     "NowNext, in Progress" : {
@@ -591,7 +653,13 @@
     "Open Settings" : {
 
     },
+    "Open task" : {
+
+    },
     "Opens task details" : {
+
+    },
+    "overdue" : {
 
     },
     "Pause" : {
@@ -657,6 +725,9 @@
     "Put it in" : {
 
     },
+    "Put on calendar" : {
+
+    },
     "Put something in Now or Next to focus on it here." : {
 
     },
@@ -667,6 +738,9 @@
 
     },
     "Remove step %@" : {
+
+    },
+    "Reschedule" : {
 
     },
     "Restore" : {
@@ -687,6 +761,9 @@
     "Save" : {
 
     },
+    "Schedule" : {
+
+    },
     "See your calendar as a countdown" : {
 
     },
@@ -697,6 +774,9 @@
 
     },
     "Show the intro again" : {
+
+    },
+    "Shows in Plan › Upcoming with a countdown" : {
 
     },
     "Skip" : {
@@ -766,6 +846,12 @@
     "Thanks for supporting NowNext." : {
 
     },
+    "That calendar didn't accept the event. Pick another calendar, or turn off \"Also add to my calendar\"." : {
+
+    },
+    "That's %@" : {
+
+    },
     "That's %@." : {
 
     },
@@ -806,6 +892,9 @@
 
     },
     "Tiny steps. Visible time." : {
+
+    },
+    "Title" : {
 
     },
     "To go" : {
@@ -850,6 +939,9 @@
     "Unlocked" : {
 
     },
+    "Unschedule" : {
+
+    },
     "Untitled event" : {
 
     },
@@ -889,10 +981,16 @@
     "Weeks" : {
 
     },
+    "What is it?" : {
+
+    },
     "What needs doing?" : {
 
     },
     "What repeats?" : {
+
+    },
+    "What should I add?" : {
 
     },
     "What you get" : {

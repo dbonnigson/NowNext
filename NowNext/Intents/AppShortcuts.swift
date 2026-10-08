@@ -7,7 +7,7 @@ struct AddToBrainDumpIntent: AppIntent {
     static let title: LocalizedStringResource = "Add to Brain Dump"
     static let openAppWhenRun: Bool = false
 
-    @Parameter(title: "Thought", requestValueDialog: "What's on your mind?")
+    @Parameter(title: "Thought", requestValueDialog: "What should I add?")
     var text: String
 
     init() {}
@@ -31,8 +31,13 @@ struct NowNextShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: AddToBrainDumpIntent(),
             phrases: [
+                "Add to my \(.applicationName)",
+                "Add something to my \(.applicationName)",
                 "Brain dump in \(.applicationName)",
+                "\(.applicationName) brain dump",
                 "Add to \(.applicationName)",
+                "Add a task to \(.applicationName)",
+                "Add to my \(.applicationName) brain dump",
                 "Capture a thought in \(.applicationName)",
             ],
             shortTitle: "Brain Dump",

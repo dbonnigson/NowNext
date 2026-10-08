@@ -4,6 +4,8 @@ import SwiftUI
 /// Each event still shows how long until it happens.
 struct CalendarModeView: View {
     let manualItems: [UpcomingItem]
+    var linkedIDs: Set<String> = []
+    let onOpen: (UpcomingItem) -> Void
     let onPrep: (UpcomingItem) -> Void
     let onDeleteManual: (UUID) -> Void
 
@@ -25,7 +27,7 @@ struct CalendarModeView: View {
             switch scope {
             case .month: monthView
             case .week: weekView
-            case .day: DayTimeline(day: anchor, items: CalendarGrid.items(on: anchor, from: rangeItems), onPrep: onPrep, onDeleteManual: onDeleteManual)
+            case .day: DayTimeline(day: anchor, items: CalendarGrid.items(on: anchor, from: rangeItems), onOpen: onOpen, onPrep: onPrep, onDeleteManual: onDeleteManual)
             }
         }
         .onAppear(perform: reload)
@@ -38,7 +40,7 @@ struct CalendarModeView: View {
     private func reload() {
         let range = CalendarGrid.range(for: scope, anchor: anchor)
         let manual = manualItems.filter { $0.start < range.end && ($0.end ?? $0.start) >= range.start }
-        rangeItems = calendarService.events(from: range.start, to: range.end) + manual
+        rangeItems = UpcomingTimeline.merge(calendar: calendarService.events(from: range.start, to: range.end), nowNext: manual, linkedIDs: linkedIDs)
     }
 
     // MARK: Header
@@ -213,7 +215,7 @@ struct CalendarModeView: View {
             }
         } else {
             ForEach(items) { item in
-                AgendaRow(item: item, day: day, onPrep: onPrep, onDeleteManual: onDeleteManual)
+                AgendaRow(item: item, day: day, onOpen: onOpen, onPrep: onPrep, onDeleteManual: onDeleteManual)
             }
         }
     }
@@ -302,10 +304,18 @@ private struct WeekDayChip: View {
 struct AgendaRow: View {
     let item: UpcomingItem
     let day: Date
+    let onOpen: (UpcomingItem) -> Void
     let onPrep: (UpcomingItem) -> Void
     let onDeleteManual: (UUID) -> Void
 
     var body: some View {
+        Button { onOpen(item) } label: { content }
+            .buttonStyle(.plain)
+            .accessibilityHint(Text(UpcomingSection.editLabel(for: item)))
+            .contextMenu { UpcomingItemMenu(item: item, onOpen: onOpen, onPrep: onPrep, onDeleteManual: onDeleteManual) }
+    }
+
+    private var content: some View {
         TimelineView(.periodic(from: .now, by: 60)) { timeline in
             let now = timeline.date
             let isPast = (item.end ?? item.start) <= now && !(item.isAllDay && Calendar.current.isDateInToday(item.start))
@@ -337,13 +347,26 @@ struct AgendaRow: View {
             .padding(.horizontal, 12)
             .frame(minHeight: 64)
             .themeCard()
+            .contentShape(RoundedRectangle(cornerRadius: Theme.radiusCard, style: .continuous))
             .accessibilityElement(children: .combine)
         }
-        .contextMenu {
-            Button { onPrep(item) } label: { Label("Make a prep task", systemImage: "plus") }
-            if case .manual(let id) = item.source {
-                Button(role: .destructive) { onDeleteManual(id) } label: { Label("Delete event", systemImage: "trash") }
-            }
+    }
+}
+
+/// Long-press menu shared by agenda rows and day-timeline blocks.
+struct UpcomingItemMenu: View {
+    let item: UpcomingItem
+    let onOpen: (UpcomingItem) -> Void
+    let onPrep: (UpcomingItem) -> Void
+    let onDeleteManual: (UUID) -> Void
+
+    var body: some View {
+        if item.taskID == nil {
+            Button { onOpen(item) } label: { Label(UpcomingSection.editLabel(for: item), systemImage: "pencil") }
+        }
+        Button { onPrep(item) } label: { Label(item.taskID == nil ? LocalizedStringKey("Add a prep task") : LocalizedStringKey("Open task"), systemImage: item.taskID == nil ? "checklist" : "arrow.up.forward.square") }
+        if case .manual(let id) = item.source {
+            Button(role: .destructive) { onDeleteManual(id) } label: { Label("Delete event", systemImage: "trash") }
         }
     }
 }
@@ -354,6 +377,7 @@ struct AgendaRow: View {
 struct DayTimeline: View {
     let day: Date
     let items: [UpcomingItem]
+    let onOpen: (UpcomingItem) -> Void
     let onPrep: (UpcomingItem) -> Void
     let onDeleteManual: (UUID) -> Void
 
@@ -372,7 +396,7 @@ struct DayTimeline: View {
             if !allDay.isEmpty {
                 SectionLabel("All day")
                 ForEach(allDay) { item in
-                    AgendaRow(item: item, day: day, onPrep: onPrep, onDeleteManual: onDeleteManual)
+                    AgendaRow(item: item, day: day, onOpen: onOpen, onPrep: onPrep, onDeleteManual: onDeleteManual)
                 }
             }
 
@@ -410,15 +434,14 @@ struct DayTimeline: View {
                         let end = min(p.item.end ?? p.item.start.addingTimeInterval(30 * 60), dayEnd)
                         let height = max(28, yOffset(for: end, firstHour: firstHour) - top - 2)
                         let width = columnWidth / CGFloat(p.columns)
-                        EventBlock(item: p.item, height: height)
-                            .frame(width: width - 3, height: height, alignment: .topLeading)
-                            .offset(x: labelWidth + 8 + CGFloat(p.column) * width, y: top + 1)
-                            .contextMenu {
-                                Button { onPrep(p.item) } label: { Label("Make a prep task", systemImage: "plus") }
-                                if case .manual(let id) = p.item.source {
-                                    Button(role: .destructive) { onDeleteManual(id) } label: { Label("Delete event", systemImage: "trash") }
-                                }
-                            }
+                        Button { onOpen(p.item) } label: {
+                            EventBlock(item: p.item, height: height)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityHint(Text(UpcomingSection.editLabel(for: p.item)))
+                        .frame(width: width - 3, height: height, alignment: .topLeading)
+                        .offset(x: labelWidth + 8 + CGFloat(p.column) * width, y: top + 1)
+                        .contextMenu { UpcomingItemMenu(item: p.item, onOpen: onOpen, onPrep: onPrep, onDeleteManual: onDeleteManual) }
                     }
 
                     // Now line

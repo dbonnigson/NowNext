@@ -74,6 +74,7 @@ struct RootView: View {
                 .presentationBackground(Theme.background)
                 .presentationCornerRadius(Theme.radiusSheet)
                 .preferredColorScheme(.dark)
+                .appEnvironment()
         }
         .fullScreenCover(isPresented: Binding(
             get: { !hasOnboarded },
@@ -83,6 +84,7 @@ struct RootView: View {
                 hasOnboarded = true
             }
             .preferredColorScheme(.dark)
+            .appEnvironment()
         }
     }
 

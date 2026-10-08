@@ -10,3 +10,4 @@ p, li { color: var(--muted); }
 a { color: var(--fg); text-decoration-color: var(--red); text-underline-offset: 3px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin: 16px 0; color: var(--fg); }
 footer { margin-top: 48px; font-size: .9rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+h1.wordmark .bolt { height: .4em; width: .3em; margin: 0 .12em; fill: var(--yellow, #F6C21C); vertical-align: .33em; }

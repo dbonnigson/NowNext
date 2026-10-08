@@ -45,6 +45,11 @@ final class TaskItem {
     var trackedSeconds: Int = 0
     /// Set when this task was created by a recurring Routine.
     var routineID: UUID?
+    /// When the task is scheduled on the calendar (Pro). `nil` = not scheduled.
+    var scheduledAt: Date?
+    var scheduledAllDay: Bool = false
+    /// EventKit eventIdentifier of the copy written to the user's iPhone calendar, if any.
+    var calendarEventID: String?
 
     @Relationship(deleteRule: .cascade, inverse: \TaskStep.task)
     var steps: [TaskStep] = []
@@ -66,6 +71,8 @@ final class TaskItem {
     }
 
     var isDone: Bool { completedAt != nil }
+
+    var isScheduled: Bool { scheduledAt != nil }
 
     var orderedSteps: [TaskStep] {
         steps.sorted { $0.sortIndex < $1.sortIndex }

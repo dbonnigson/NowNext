@@ -9,6 +9,7 @@ struct TaskDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(Router.self) private var router
     @Environment(FocusController.self) private var focus
+    @Environment(PurchaseManager.self) private var purchases
 
     @AppStorage(SettingsKey.nowLimit) private var nowLimit = PlannerLogic.defaultNowLimit
 
@@ -16,6 +17,8 @@ struct TaskDetailSheet: View {
     @State private var fullLimit: Int?
     @State private var confirmDelete = false
     @State private var isDeleted = false
+    @State private var showSchedule = false
+    @State private var showPaywall = false
     @FocusState private var stepFieldFocused: Bool
 
     var body: some View {
@@ -29,6 +32,7 @@ struct TaskDetailSheet: View {
 
                     SectionLabel("Where it lives")
                     SlotPicker(selection: slotBinding, disabled: task.isDone)
+                    calendarTile
 
                     SectionLabel("Tiny steps", trailing: task.stepProgressText.map { _ in
                         "\(task.steps.filter(\.isDone).count)/\(task.steps.count)"
@@ -76,6 +80,17 @@ struct TaskDetailSheet: View {
             }
         }
         .nowFullAlert($fullLimit)
+        .sheet(isPresented: $showSchedule) {
+            ScheduleTaskSheet(task: task)
+                .themedSheet()
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Theme.background)
+                .preferredColorScheme(.dark)
+                .appEnvironment()
+        }
         .sensoryFeedback(.success, trigger: task.isDone)
         .onDisappear {
             if isDeleted {
@@ -85,6 +100,10 @@ struct TaskDetailSheet: View {
             }
             if task.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 task.title = String(localized: "Untitled task")
+            }
+            // Keep the iPhone calendar copy's title and length in sync with edits.
+            if task.calendarEventID != nil {
+                task.calendarEventID = (try? CalendarWriter.upsert(task: task, calendarID: nil)) ?? task.calendarEventID
             }
             TaskStore.save(context)
         }
@@ -116,8 +135,16 @@ struct TaskDetailSheet: View {
 
     /// Choices already made, shown as chips.
     private var chips: some View {
+        ScrollView(.horizontal, showsIndicators: false) { chipRow }
+    }
+
+    private var chipRow: some View {
         HStack(spacing: 8) {
             Chip(text: task.slot.title, symbol: task.slot.symbol, symbolColor: task.slot.glyphColor)
+            if let at = task.scheduledAt {
+                Chip(text: Countdown.scheduledPhrase(at: at, isAllDay: task.scheduledAllDay).capitalizedFirst,
+                     symbol: "calendar", symbolColor: Theme.red)
+            }
             if let est = task.estimateMinutes {
                 Chip(text: String(localized: "Guess \(DurationText.short(minutes: est))"), symbol: "hourglass")
             }
@@ -125,6 +152,36 @@ struct TaskDetailSheet: View {
                 Chip(text: String(localized: "Focused \(DurationText.short(seconds: task.trackedSeconds))"), symbol: "timer")
             }
         }
+    }
+
+    /// Fifth "Where it lives" option: put the task on the NowNext calendar
+    /// (and optionally the iPhone calendar). Pro.
+    private var calendarTile: some View {
+        SelectTile(
+            title: scheduleTitle,
+            symbol: task.isScheduled ? "calendar.badge.checkmark" : "calendar.badge.plus",
+            isSelected: task.isScheduled
+        ) {
+            if purchases.isPro {
+                showSchedule = true
+            } else {
+                showPaywall = true
+            }
+        }
+        .disabled(task.isDone)
+        .overlay(alignment: .topTrailing) {
+            if !purchases.isPro {
+                LockTag().scaleEffect(0.8).offset(x: 4, y: -8)
+            }
+        }
+    }
+
+    private var scheduleTitle: String {
+        guard let at = task.scheduledAt else { return String(localized: "Calendar") }
+        let when = task.scheduledAllDay
+            ? at.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day())
+            : at.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().hour().minute())
+        return String(localized: "Calendar · \(when)")
     }
 
     private var slotBinding: Binding<Slot> {

@@ -4,11 +4,6 @@ import UserNotifications
 
 @main
 struct NowNextApp: App {
-    @State private var purchases = PurchaseManager()
-    @State private var focus = FocusController()
-    @State private var router = Router()
-    @State private var calendar = CalendarService()
-
     init() {
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
     }
@@ -16,12 +11,32 @@ struct NowNextApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(purchases)
-                .environment(focus)
-                .environment(router)
-                .environment(calendar)
+                .appEnvironment()
         }
         .modelContainer(SharedModelContainer.shared)
+    }
+}
+
+/// The app-wide objects, created once.
+@MainActor
+enum AppServices {
+    static let purchases = PurchaseManager()
+    static let focus = FocusController()
+    static let router = Router()
+    static let calendar = CalendarService()
+}
+
+extension View {
+    /// Attaches the app-wide objects. Applied at the root AND on every sheet:
+    /// older SwiftUI (iOS 17, and iPhone apps running on Macs) can lose
+    /// @Observable environment values across a presentation, which crashes with
+    /// "No Observable object of type … found".
+    func appEnvironment() -> some View {
+        self
+            .environment(AppServices.purchases)
+            .environment(AppServices.focus)
+            .environment(AppServices.router)
+            .environment(AppServices.calendar)
     }
 }
 

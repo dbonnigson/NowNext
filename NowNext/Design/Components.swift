@@ -355,6 +355,9 @@ struct TaskRow: View {
     private var detailText: String {
         var parts: [String] = []
         if showSlot { parts.append(task.slot.title) }
+        if let at = task.scheduledAt {
+            parts.append(String(localized: "Calendar \(Countdown.scheduledPhrase(at: at, isAllDay: task.scheduledAllDay))"))
+        }
         if let steps = task.stepProgressText { parts.append(steps) }
         if let est = task.estimateMinutes {
             parts.append(String(localized: "Guess \(DurationText.short(minutes: est))"))
@@ -538,6 +541,7 @@ extension View {
             .presentationBackground(Theme.surface)
             .presentationCornerRadius(Theme.radiusSheet)
             .preferredColorScheme(.dark)
+            .appEnvironment()
     }
 }
 

@@ -10,6 +10,8 @@ enum SettingsKey {
     static let focusState = "focusState"
     static let upcomingMode = "upcomingMode"     // "countdown" | "calendar"
     static let calendarScope = "calendarScope"   // "month" | "week" | "day"
+    static let scheduleCalendarID = "scheduleCalendarID" // last calendar picked for scheduled tasks
+    static let scheduleAddToCalendar = "scheduleAddToCalendar"
 }
 
 enum AppLinks {

@@ -174,3 +174,28 @@ struct CalendarGridTests {
         #expect(p.map(\.columns) == [2, 2, 1])
     }
 }
+
+struct MergeTests {
+    @Test func scheduledTaskReplacesItsCalendarCopy() {
+        let start = day(2026, 10, 9, 15)
+        let copy = UpcomingItem(id: "cal-x", title: "Call dentist", start: start, end: nil, isAllDay: false,
+                                source: .calendar(name: "Home"), externalID: "EV1")
+        let other = UpcomingItem(id: "cal-y", title: "Soccer", start: start, end: nil, isAllDay: false,
+                                 source: .calendar(name: "Home"), externalID: "EV2")
+        let task = UpcomingItem(id: "task-1", title: "Call dentist", start: start, end: nil, isAllDay: false,
+                                source: .task(UUID()), externalID: "EV1")
+        let merged = UpcomingTimeline.merge(calendar: [copy, other], nowNext: [task])
+        #expect(merged.map(\.id) == ["cal-y", "task-1"])
+    }
+}
+
+struct OverdueTests {
+    @Test func finishedTaskCopyStaysHiddenAndOverdueReads() {
+        let copy = UpcomingItem(id: "cal-x", title: "Done thing", start: day(2026, 10, 9, 15), end: nil, isAllDay: false,
+                                source: .calendar(name: "Home"), externalID: "EV9")
+        #expect(UpcomingTimeline.merge(calendar: [copy], nowNext: [], linkedIDs: ["EV9"]).isEmpty)
+        let now = day(2026, 10, 9, 16)
+        #expect(Countdown.scheduledPhrase(at: day(2026, 10, 9, 15), isAllDay: false, now: now, calendar: utc) == "overdue")
+        #expect(Countdown.scheduledPhrase(at: day(2026, 10, 10, 9), isAllDay: false, now: now, calendar: utc) == "tomorrow")
+    }
+}

@@ -18,7 +18,7 @@ Requirements verified September 2026 (see "Current Apple requirements" at the bo
 | **Secondary category** | Lifestyle | Avoids Health/Medical, which invites medical-claim scrutiny (Guideline 1.4). |
 | **Price** | Free (with one In-App Purchase) | |
 
-> Name check: search App Store Connect for "NowNext" before creating the record. If taken, alternatives that fit your "ADHD in Progress" brand: `In Progress: ADHD Planner` (25), `Tiny Steps: ADHD Planner` (24).
+> Name check: an older app called "Now&Next" (Indigo Mountain, task manager) exists and appears delisted in at least some regions. App Store names must be unique, so "NowNext: ADHD Planner" should be accepted, but if App Store Connect rejects it, use one of the alternatives below. Search App Store Connect for "NowNext" before creating the record. If taken, alternatives that fit your "ADHD in Progress" brand: `In Progress: ADHD Planner` (25), `Tiny Steps: ADHD Planner` (24).
 > Keyword rules followed: no spaces, no words repeated from name/subtitle (planner, brain, dump, pick, focus, ADHD), no competitor names.
 
 ### Promotional text (170 max — editable any time without review)
@@ -38,7 +38,7 @@ Made for ADHD brains, busy brains, and anyone who has stared at a 40-item to-do 
 BRAIN DUMP
 • Type or paste anything, one thought per line. Every line becomes a task.
 • No categories, no due dates, no decisions yet. Just get it out.
-• Say "Brain dump in NowNext" to Siri to capture without opening the app.
+• Say "Add to my NowNext" to Siri to capture without opening the app.
 
 NOW, NEXT, LATER
 • Now holds up to three things (you can change the limit from 1 to 5).
@@ -64,6 +64,9 @@ HOME SCREEN WIDGET
 
 NOWNEXT PRO (one-time purchase, no subscription)
 • Upcoming, as a countdown: your calendar shown as time left (45 min, 3 days, 2 weeks) instead of a grid of dates, with a 14-day horizon strip and one-tap prep tasks.
+• Prefer a regular calendar? Flip to month, week or day view any time. Every event still shows how long until it starts.
+• Put any task on the calendar from its "Where it lives" menu, and optionally add it to your iPhone calendar too (iCloud, Google, Outlook).
+• Tap any event to fix the wording or move it.
 • Routines: tasks that come back daily, on weekdays, weekly or monthly. Missed days never pile up.
 • Insights: focus minutes by day and tasks finished each week.
 • Time-sense calibration: learn how your guesses compare with reality ("tasks take you about 40% longer than you think") and plan with a personal multiplier.
@@ -78,7 +81,7 @@ NowNext is a planning and focus tool. It is not a medical device and does not di
 ### What's New (v1.0.0)
 
 ```
-First release. Brain dump, Now/Next/Later, tiny steps, a visual focus timer with Live Activities, a Home Screen widget, and NowNext Pro (Upcoming countdown, Routines, Insights).
+First release. Brain dump, Now/Next/Later, tiny steps, a visual focus timer with Live Activities, a Home Screen widget, Siri capture, and NowNext Pro (Upcoming countdown and calendar, scheduling tasks to your calendar, Routines, Insights).
 ```
 
 ### URLs
@@ -100,12 +103,12 @@ These pages are in `/docs`. Turn on GitHub Pages (Settings → Pages → Deploy 
 | Type | Non-Consumable |
 | Reference name | NowNext Pro |
 | Product ID | `ai.palmettogroup.nownext.pro` (must match `PurchaseManager.proProductID`) |
-| Price | Tier of your choice (the local `.storekit` file uses $4.99) |
+| Price | $7.99 USD (base country United States; the local `.storekit` file matches) |
 | Family Sharing | On (recommended) |
 | Display name | NowNext Pro |
 | Description (45 max) | `Countdown calendar, routines and insights` (41) |
 | Review screenshot | Screenshot of the paywall (Settings → Unlock NowNext Pro) |
-| Review notes | "Unlocks the Plan tab: Upcoming (calendar as countdown), Routines (recurring tasks) and Insights. Core planner is free." |
+| Review notes | "Unlocks the Plan tab: Upcoming (calendar as countdown or month/week/day), scheduling tasks onto a calendar, Routines (recurring tasks) and Insights. Core planner is free." |
 
 Submit the IAP **with** the first app version (App Store Connect → the version page → In-App Purchases → add it). An IAP created but not attached to the version is the most common first-submission rejection for unlock-style apps.
 
@@ -115,7 +118,7 @@ Submit the IAP **with** the first app version (App Store Connect → the version
 
 Answer: **Data Not Collected.**
 
-Calendar events (Pro › Upcoming, optional) are read with EventKit and processed only on the device. They're never stored by NowNext or transmitted, so they are not "collected" under Apple's definition and the label stays the same. The permission string is `NSCalendarsFullAccessUsageDescription` in Info.plist.
+Calendar events (Pro › Upcoming, optional) are read with EventKit and processed only on the device. Scheduled tasks the user chooses to add are written to their own calendar on-device. Nothing is stored by NowNext off-device or transmitted, so it is not "collected" under Apple's definition and the label stays the same. The permission string is `NSCalendarsFullAccessUsageDescription` in Info.plist.
 
 Why this is accurate:
 - No analytics, ads, crash-reporting or third-party SDKs are linked.
@@ -174,11 +177,13 @@ How to reach every feature:
 - Tap a task to add "Tiny steps" and a time guess, then "Focus on this".
 - Focus tab: pick a length, tap Start. Pause, +5 min and End are available. A Live Activity appears on the Lock Screen/Dynamic Island.
 - Widget: long-press Home Screen > + > NowNext > "Now".
-- Siri/Shortcuts: "Brain dump in NowNext".
+- Siri/Shortcuts: "Add to my NowNext" (also "Brain dump in NowNext").
 
 In-App Purchase: "NowNext Pro" (non-consumable) unlocks the Plan tab: Upcoming (calendar shown as time-until), Routines (recurring tasks) and Insights. Open the Plan tab or Settings > Unlock NowNext Pro. Restore Purchases is on the paywall and in Settings.
 
-Calendar permission (full access, read-only use) is requested only when the user taps "Connect Calendar" in Plan > Upcoming. Events are shown as a countdown and never leave the device. Manual events can be added without granting it.
+Calendar permission (full access) is requested only when the user taps "Connect Calendar" in Plan > Upcoming, or turns on "Also add to my calendar" when scheduling a task. It is used to show events as a countdown or month/week/day calendar, to add a scheduled task to the calendar the user picks, and to open Apple's own editor when the user taps one of their events. NowNext only changes or removes events it created itself, or ones the user explicitly edits in Apple's editor. Calendar data never leaves the device. Manual events can be added without granting it.
+
+To see scheduling: open any task > "Where it lives" > Calendar, pick a time, Save. It appears in Plan > Upcoming.
 
 Notifications permission is requested only when the user starts their first focus session or turns on the daily reminder, and is used only for local "time's up" and reminder notifications.
 

@@ -16,7 +16,7 @@ settings:
     ENABLE_USER_SCRIPT_SANDBOXING: YES
     STRING_CATALOG_GENERATE_SYMBOLS: YES
     # Set your Apple Developer Team ID here or in Xcode > Signing & Capabilities.
-    DEVELOPMENT_TEAM: ""
+    DEVELOPMENT_TEAM: "9PJZBQH479"
 
 targets:
   NowNext:
@@ -38,7 +38,11 @@ targets:
         LSApplicationCategoryType: public.app-category.productivity
         ITSAppUsesNonExemptEncryption: false
         NSSupportsLiveActivities: true
-        NSCalendarsFullAccessUsageDescription: "NowNext shows your upcoming events as a countdown so you can see how much time you have. Your calendar is only read on this iPhone and never leaves it."
+        # Lets Siri recognize "Now Next" spoken as two words.
+        INAlternativeAppNames:
+          - INAlternativeAppName: "Now Next"
+            INAlternativeAppNamePronunciationHint: "now next"
+        NSCalendarsFullAccessUsageDescription: "NowNext shows your upcoming events as a countdown, and can add tasks you schedule to the calendar you choose. Your calendar stays on this iPhone and is never sent to us."
         UILaunchScreen:
           UIColorName: LaunchBackground
         UIApplicationSceneManifest:

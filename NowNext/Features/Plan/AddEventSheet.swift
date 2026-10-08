@@ -1,15 +1,35 @@
 import SwiftData
 import SwiftUI
 
-/// Add an event by hand. Quick-pick chips first, exact date/time second.
+/// Add an event by hand, or fix one you already added.
+/// Quick-pick chips first, exact date/time second.
 struct AddEventSheet: View {
+    /// nil = new event. Set = editing that event.
+    var event: UpcomingEvent?
+
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
 
-    @State private var title = ""
-    @State private var date = AddEventSheet.defaultDate()
-    @State private var isAllDay = false
+    @State private var title: String
+    @State private var date: Date
+    @State private var isAllDay: Bool
     @FocusState private var titleFocused: Bool
+
+    init(event: UpcomingEvent? = nil) {
+        self.event = event
+        _title = State(initialValue: event?.title ?? "")
+        _date = State(initialValue: event?.date ?? AddEventSheet.defaultDate())
+        _isAllDay = State(initialValue: event?.isAllDay ?? false)
+    }
+
+    private var isEditing: Bool { event != nil }
+
+    /// New events start from now. When fixing one, its old date stays pickable
+    /// even if it already passed.
+    private var earliestDate: Date {
+        guard let event else { return Calendar.current.startOfDay(for: Date()) }
+        return min(Calendar.current.startOfDay(for: event.date), Calendar.current.startOfDay(for: Date()))
+    }
 
     private var trimmed: String { title.trimmingCharacters(in: .whitespacesAndNewlines) }
 
@@ -36,7 +56,7 @@ struct AddEventSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            SheetHeader(title: "New event") { dismiss() }
+            SheetHeader(title: isEditing ? "Edit event" : "New event") { dismiss() }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: Theme.spacingS) {
@@ -68,7 +88,7 @@ struct AddEventSheet: View {
                         Rectangle().fill(Theme.line).frame(height: 1)
                         DatePicker(
                             selection: $date,
-                            in: Date()...,
+                            in: earliestDate...,
                             displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute]
                         ) {
                             Text("Date")
@@ -90,15 +110,20 @@ struct AddEventSheet: View {
             }
 
             BottomActionBar {
-                Button("Cancel") { dismiss() }
-                    .buttonStyle(.secondary)
-                Button("Add event", action: save)
+                if isEditing {
+                    Button("Delete", role: .destructive, action: delete)
+                        .buttonStyle(.secondaryDestructive)
+                } else {
+                    Button("Cancel") { dismiss() }
+                        .buttonStyle(.secondary)
+                }
+                Button(isEditing ? "Save" : "Add event", action: save)
                     .buttonStyle(.primary)
                     .layoutPriority(1)
                     .disabled(trimmed.isEmpty)
             }
         }
-        .onAppear { titleFocused = true }
+        .onAppear { if !isEditing { titleFocused = true } }
         .sensoryFeedback(.selection, trigger: date)
     }
 
@@ -127,7 +152,19 @@ struct AddEventSheet: View {
 
     private func save() {
         guard !trimmed.isEmpty else { return }
-        context.insert(UpcomingEvent(title: trimmed, date: eventDate, isAllDay: isAllDay))
+        if let event {
+            event.title = trimmed
+            event.date = eventDate
+            event.isAllDay = isAllDay
+        } else {
+            context.insert(UpcomingEvent(title: trimmed, date: eventDate, isAllDay: isAllDay))
+        }
+        TaskStore.save(context)
+        dismiss()
+    }
+
+    private func delete() {
+        if let event { context.delete(event) }
         TaskStore.save(context)
         dismiss()
     }

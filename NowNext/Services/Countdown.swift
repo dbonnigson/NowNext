@@ -32,6 +32,13 @@ struct Countdown: Equatable {
     /// Plain-language version: "in 45 min", "in 3h 20m", "today", "tomorrow", "in 6 days".
     let phrase: String
 
+    /// Label for a scheduled task: countdown phrase, or "Overdue" once its time has passed.
+    static func scheduledPhrase(at: Date, isAllDay: Bool, now: Date = Date(), calendar: Calendar = .current) -> String {
+        let past = isAllDay ? calendar.startOfDay(for: at) < calendar.startOfDay(for: now) : at < now
+        if past { return String(localized: "overdue") }
+        return make(start: at, end: nil, isAllDay: isAllDay, now: now, calendar: calendar).phrase
+    }
+
     static func make(
         start: Date,
         end: Date?,
@@ -97,6 +104,8 @@ struct UpcomingItem: Identifiable, Equatable {
     enum Source: Equatable {
         case calendar(name: String)
         case manual(UUID)
+        /// A NowNext task that was scheduled from its "Where it lives" menu.
+        case task(UUID)
     }
 
     let id: String
@@ -105,14 +114,33 @@ struct UpcomingItem: Identifiable, Equatable {
     let end: Date?
     let isAllDay: Bool
     let source: Source
+    /// EventKit eventIdentifier (calendar items, and tasks copied to a calendar).
+    var externalID: String? = nil
 
     var isManual: Bool {
         if case .manual = source { return true }
         return false
     }
+
+    var taskID: UUID? {
+        if case .task(let id) = source { return id }
+        return nil
+    }
 }
 
 enum UpcomingTimeline {
+    /// Combines calendar events with NowNext items, dropping calendar copies of
+    /// scheduled tasks so each scheduled task appears once (as the task).
+    /// `linkedIDs` = calendar copies of any task (including finished ones) to hide.
+    static func merge(calendar: [UpcomingItem], nowNext: [UpcomingItem], linkedIDs: Set<String> = []) -> [UpcomingItem] {
+        let linked = linkedIDs.union(nowNext.compactMap { $0.taskID == nil ? nil : $0.externalID })
+        let calendarOnly = calendar.filter { item in
+            guard let ext = item.externalID else { return true }
+            return !linked.contains(ext)
+        }
+        return calendarOnly + nowNext
+    }
+
     /// Drops finished items, sorts soonest first.
     static func upcoming(_ items: [UpcomingItem], now: Date, calendar: Calendar = .current) -> [UpcomingItem] {
         items

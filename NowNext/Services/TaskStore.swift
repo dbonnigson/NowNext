@@ -74,6 +74,8 @@ enum TaskStore {
     }
 
     static func delete(_ task: TaskItem, context: ModelContext) {
+        // Also remove the calendar copy NowNext created for it, if any.
+        CalendarWriter.remove(eventID: task.calendarEventID)
         context.delete(task)
         save(context)
     }
@@ -151,6 +153,7 @@ enum TaskStore {
             context.delete(session)
         }
         for task in (try? context.fetch(FetchDescriptor<TaskItem>())) ?? [] {
+            CalendarWriter.remove(eventID: task.calendarEventID)
             context.delete(task) // steps cascade
         }
         for routine in (try? context.fetch(FetchDescriptor<Routine>())) ?? [] {

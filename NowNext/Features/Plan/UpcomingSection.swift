@@ -7,10 +7,19 @@ import UIKit
 struct UpcomingSection: View {
     @Environment(\.modelContext) private var context
     @Environment(CalendarService.self) private var calendarService
+    @Environment(Router.self) private var router
 
     @Query(sort: \UpcomingEvent.date) private var manualEvents: [UpcomingEvent]
+    @Query(filter: #Predicate<TaskItem> { $0.scheduledAt != nil && $0.completedAt == nil })
+    private var scheduledTasks: [TaskItem]
+    @Query(filter: #Predicate<TaskItem> { $0.calendarEventID != nil })
+    private var calendarLinkedTasks: [TaskItem]
+
+    private var linkedIDs: Set<String> { Set(calendarLinkedTasks.compactMap(\.calendarEventID)) }
 
     @State private var prepAdded = 0
+    @State private var editingEvent: UpcomingEvent?
+    @State private var editingCalendarEvent: CalendarEventRef?
     @AppStorage(SettingsKey.upcomingMode) private var modeRaw = UpcomingMode.countdown.rawValue
 
     private var mode: UpcomingMode { UpcomingMode(rawValue: modeRaw) ?? .countdown }
@@ -23,13 +32,27 @@ struct UpcomingSection: View {
                 countdownView
             } else {
                 CalendarModeView(
-                    manualItems: manualItems,
+                    manualItems: manualItems + taskItems,
+                    linkedIDs: linkedIDs,
+                    onOpen: open,
                     onPrep: addPrepTask,
                     onDeleteManual: deleteManual
                 )
             }
         }
         .sensoryFeedback(.success, trigger: prepAdded)
+        .sheet(item: $editingEvent) { event in
+            AddEventSheet(event: event)
+                .themedSheet()
+        }
+        .sheet(item: $editingCalendarEvent) { ref in
+            CalendarEventEditor(ref: ref) {
+                editingCalendarEvent = nil
+                calendarService.refresh()
+            }
+            .ignoresSafeArea()
+            .appEnvironment()
+        }
         .task {
             calendarService.refresh()
             for await _ in NotificationCenter.default.notifications(named: .EKEventStoreChanged) {
@@ -72,7 +95,24 @@ struct UpcomingSection: View {
     }
 
     private var allItems: [UpcomingItem] {
-        calendarService.items + manualItems
+        UpcomingTimeline.merge(calendar: calendarService.items, nowNext: manualItems + taskItems, linkedIDs: linkedIDs)
+    }
+
+    /// Tasks put on the calendar from their "Where it lives" menu.
+    private var taskItems: [UpcomingItem] {
+        scheduledTasks.compactMap { task in
+            guard let at = task.scheduledAt else { return nil }
+            let minutes = Double(max(task.estimateMinutes ?? 30, 5))
+            return UpcomingItem(
+                id: "task-\(task.uuid.uuidString)",
+                title: task.title,
+                start: at,
+                end: task.scheduledAllDay ? nil : at.addingTimeInterval(minutes * 60),
+                isAllDay: task.scheduledAllDay,
+                source: .task(task.uuid),
+                externalID: task.calendarEventID
+            )
+        }
     }
 
     private var manualItems: [UpcomingItem] {
@@ -163,12 +203,15 @@ struct UpcomingSection: View {
             Button {
                 addPrepTask(for: item)
             } label: {
-                Label("Make a prep task", systemImage: "plus")
+                Label(item.taskID == nil ? LocalizedStringKey("Add a prep task") : LocalizedStringKey("Open task"), systemImage: item.taskID == nil ? "checklist" : "arrow.up.forward.square")
             }
             .buttonStyle(.secondary)
         }
         .padding(Theme.spacingM)
         .themeCard(radius: Theme.radiusHero)
+        .contentShape(RoundedRectangle(cornerRadius: Theme.radiusHero, style: .continuous))
+        .onTapGesture { open(item) }
+        .accessibilityAction(named: Text(editLabel(for: item))) { open(item) }
         .contextMenu { menu(for: item) }
     }
 
@@ -191,7 +234,15 @@ struct UpcomingSection: View {
 
     private func row(_ item: UpcomingItem, now: Date) -> some View {
         let c = Countdown.make(start: item.start, end: item.end, isAllDay: item.isAllDay, now: now)
-        return HStack(spacing: 12) {
+        return Button { open(item) } label: { rowContent(item, countdown: c) }
+            .buttonStyle(.plain)
+            .accessibilityLabel("\(item.title), \(c.phrase)")
+            .accessibilityHint(Text(editLabel(for: item)))
+            .contextMenu { menu(for: item) }
+    }
+
+    private func rowContent(_ item: UpcomingItem, countdown c: Countdown) -> some View {
+        HStack(spacing: 12) {
             VStack(spacing: 0) {
                 Text(c.value)
                     .font(.system(size: Theme.TextStyle.statNumber.scaledSize(), weight: .black))
@@ -223,17 +274,18 @@ struct UpcomingSection: View {
         .padding(.horizontal, 12)
         .frame(minHeight: Theme.optionRowMinHeight)
         .themeCard()
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(item.title), \(c.phrase)")
-        .contextMenu { menu(for: item) }
+        .contentShape(RoundedRectangle(cornerRadius: Theme.radiusCard, style: .continuous))
     }
 
     @ViewBuilder
     private func menu(for item: UpcomingItem) -> some View {
+        if item.taskID == nil {
+            Button { open(item) } label: { Label(editLabel(for: item), systemImage: "pencil") }
+        }
         Button {
             addPrepTask(for: item)
         } label: {
-            Label("Make a prep task", systemImage: "plus")
+            Label(item.taskID == nil ? LocalizedStringKey("Add a prep task") : LocalizedStringKey("Open task"), systemImage: item.taskID == nil ? "checklist" : "arrow.up.forward.square")
         }
         if case .manual(let id) = item.source {
             Button(role: .destructive) {
@@ -257,8 +309,35 @@ struct UpcomingSection: View {
         switch item.source {
         case .calendar(let name): parts.append(name)
         case .manual: parts.append(String(localized: "Added in NowNext"))
+        case .task: parts.append(String(localized: "NowNext task"))
         }
         return parts.joined(separator: " · ")
+    }
+
+    private func editLabel(for item: UpcomingItem) -> String {
+        UpcomingSection.editLabel(for: item)
+    }
+
+    static func editLabel(for item: UpcomingItem) -> String {
+        switch item.source {
+        case .task: String(localized: "Open task")
+        default: String(localized: "Edit event")
+        }
+    }
+
+    /// Tap an event to fix it:
+    /// hand-added → NowNext editor, scheduled task → the task, iPhone calendar → Apple's editor.
+    private func open(_ item: UpcomingItem) {
+        switch item.source {
+        case .manual(let id):
+            editingEvent = manualEvents.first { $0.uuid == id }
+        case .task(let id):
+            router.openTask = scheduledTasks.first { $0.uuid == id }
+        case .calendar:
+            guard let eventID = item.externalID,
+                  let event = CalendarWriter.event(withID: eventID, start: item.start) else { return }
+            editingCalendarEvent = CalendarEventRef(event: event)
+        }
     }
 
     private func deleteManual(_ id: UUID) {
@@ -268,9 +347,19 @@ struct UpcomingSection: View {
         }
     }
 
+    /// Creates "Prep: <event>" in Next and opens it right away,
+    /// so you can add tiny steps and a time guess while you're thinking about it.
     private func addPrepTask(for item: UpcomingItem) {
-        TaskStore.add([String(localized: "Prep: \(item.title)")], to: .next, context: context)
+        // Scheduled tasks: open the task itself instead of making a prep task.
+        if let id = item.taskID {
+            router.openTask = scheduledTasks.first { $0.uuid == id }
+            return
+        }
+        let created = TaskStore.add([String(localized: "Prep: \(item.title)")], to: .next, context: context)
         prepAdded += 1
+        if let task = created.first {
+            router.openTask = task
+        }
     }
 
     private var emptyState: some View {
