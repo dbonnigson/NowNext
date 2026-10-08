@@ -60,13 +60,19 @@ struct TaskDetailSheet: View {
                     }
                     .buttonStyle(.secondary)
                 }
-                Button {
-                    withAnimation { TaskStore.setDone(task, !task.isDone, context: context) }
-                } label: {
-                    Text(task.isDone ? LocalizedStringKey("Reopen") : LocalizedStringKey("Mark done"))
+                if task.isDone {
+                    // Finished tasks are reopened from the list (tap the red check), not here.
+                    Button("Close") { dismiss() }
+                        .buttonStyle(.secondary)
+                } else {
+                    Button("Mark done") {
+                        // Close the sheet so the task shows up crossed off in the list.
+                        TaskStore.setDone(task, true, context: context)
+                        dismiss()
+                    }
+                    .buttonStyle(.primary)
+                    .layoutPriority(1)
                 }
-                .buttonStyle(.primary)
-                .layoutPriority(1)
             }
         }
         .nowFullAlert($fullLimit)
