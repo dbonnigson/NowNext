@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NowNext Preview</title>
+<style>
+:root{--bg:#050505;--surface:#141414;--raised:#1F1F1F;--line:#333;--text:#fff;--muted:#C7C7C7;--red:#E3120B;--yellow:#F6C21C;--gray:#9A9A9A;--warn:#2A2413}
+*{box-sizing:border-box}
+body{margin:0;background:#0d0d0d;color:var(--text);font:16px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
+header{max-width:1180px;margin:0 auto;padding:24px 20px 0}
+header h1{margin:0;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--red)}
+header p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.stage{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;padding:20px 16px 48px;max-width:1180px;margin:0 auto}
+.col{display:flex;flex-direction:column;align-items:center}
+.caption{color:var(--muted);font-size:13px;margin-top:10px;text-align:center}
+.phone{width:375px;height:790px;border-radius:54px;background:var(--bg);border:10px solid #2a2a2a;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:112px;height:31px;border-radius:20px;background:#000;z-index:5}
+.status{height:50px;flex:none;display:flex;justify-content:space-between;align-items:flex-end;padding:0 30px 4px;font-weight:600;font-size:14px}
+.nav{height:46px;flex:none;display:flex;justify-content:center;align-items:center;border-bottom:1px solid var(--raised)}
+.rail{display:flex;align-items:center;gap:10px}
+.bars{display:flex;align-items:center;gap:3px}
+.bars i{display:block;width:5px;border-radius:1.5px;background:var(--raised);height:14px}
+.bars i.f{background:var(--red);height:22px}
+.bars i.cap{width:3px;height:22px;background:var(--gray)}
+.rail span{font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+.screen{flex:1;overflow-y:auto;padding:8px 20px 16px}
+.screen::-webkit-scrollbar{display:none}
+.title{font-size:30px;font-weight:800;text-transform:uppercase;margin:6px 0 4px}
+.label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.row{display:flex;align-items:center;gap:12px;padding:0 14px 0 12px;min-height:72px;margin-bottom:8px;cursor:default}
+.row .txt{flex:1;min-width:0;cursor:pointer}
+.row .t{font-size:17px;font-weight:600}
+.row .d{font-size:14px;color:var(--muted);margin-top:2px}
+.row .done{color:var(--muted);text-decoration:line-through}
+.chev{color:var(--muted);font-weight:700}
+.plate{width:44px;height:44px;flex:none;border-radius:50%;background:var(--raised);border:1px solid var(--line);display:grid;place-items:center;cursor:pointer;color:#fff;font-weight:900;font-size:17px;padding:0}
+.plate.on{background:var(--red);border:2px solid #fff}
+.mv{border:none;border-radius:10px;padding:6px 8px;font-size:11px;font-weight:800;text-transform:uppercase;cursor:pointer;color:#fff;background:var(--raised)}
+.mv.red{background:var(--red)}
+.btn{flex:1;height:54px;border-radius:14px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,opacity .12s;padding:0 12px;white-space:nowrap}
+.btn:active{transform:scale(.98);opacity:.8}
+.primary{background:var(--red);border:2px solid #fff;color:#fff;font-weight:800;text-transform:uppercase;letter-spacing:1px;flex:1.4}
+.secondary{background:var(--raised);border:none;color:#fff;font-weight:600}
+.btn:disabled{background:var(--raised);border-color:var(--line);opacity:.6}
+.bar{flex:none;border-top:1px solid var(--raised);padding:12px 20px 8px;display:flex;gap:12px;background:var(--bg)}
+.tabs{flex:none;display:flex;justify-content:space-around;padding:6px 6px 22px;border-top:1px solid var(--raised);background:var(--bg)}
+.tab{border:none;background:none;color:var(--muted);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:58px;font-weight:600}
+.tab svg{width:22px;height:22px}
+.tab.on{color:#fff}
+.callout{display:flex;gap:12px;background:var(--warn);border:1px solid var(--yellow);border-radius:14px;padding:14px;margin:4px 0 8px}
+.callout .h{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--yellow);margin-bottom:3px}
+.callout .m{font-size:14px}
+.brand{display:flex;flex-direction:column;align-items:center;margin:6px 0 4px}
+.word{font-size:48px;font-weight:900;color:var(--red);text-transform:uppercase;line-height:1;margin-top:10px;letter-spacing:-.5px}
+.tag{font-size:18px;font-weight:700;display:flex;gap:8px;align-items:center;margin-top:4px}
+.tag b{color:var(--yellow);font-size:11px}
+textarea{width:100%;border:none;background:transparent;color:#fff;font:600 17px -apple-system,sans-serif;resize:none;min-height:96px;outline:none;padding:16px 14px}
+textarea::placeholder{color:#8a8a8a}
+.muted{color:var(--muted);font-size:14px}
+.tiles{display:flex;gap:8px}
+.tile{flex:1;min-height:52px;border-radius:14px;background:var(--surface);border:1px solid var(--line);color:#fff;font-weight:800;font-size:16px;cursor:pointer;font-variant-numeric:tabular-nums}
+.tile.on{background:var(--red);border:2px solid #fff}
+.pie{width:230px;height:230px;display:block;margin:6px auto}
+.clock{text-align:center;font-size:64px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.1}
+.stats{display:flex;gap:10px}
+.stat{flex:1;padding:16px}
+.stat .v{font-size:26px;font-weight:900;color:var(--red);font-variant-numeric:tabular-nums}
+.stat .l{font-size:12px;color:var(--muted);font-weight:500}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip{border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:12.5px;font-weight:600;padding:6px 10px}
+.icontile{width:44px;height:44px;border-radius:12px;background:var(--raised);display:grid;place-items:center;flex:none}
+.sheetwrap{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;z-index:8}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:78%;background:var(--surface);border-radius:28px 28px 0 0;display:flex;flex-direction:column}
+.grab{width:36px;height:5px;border-radius:3px;background:#555;margin:8px auto 0}
+.shead{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 8px}
+.shead h2{margin:0;font-size:19px;font-weight:800;text-transform:uppercase}
+.x{width:44px;height:44px;border-radius:50%;background:var(--raised);border:none;color:#fff;font-weight:900;font-size:16px;cursor:pointer}
+.sheet .screen{padding-top:0}
+.sheet .card{background:var(--bg)}
+.sheet .tile{background:var(--bg)}
+.sheet .tile.on{background:var(--red)}
+.lock{background:#050505}
+.bigtime{text-align:center;font-size:78px;font-weight:300;margin-top:26px}
+.date{text-align:center;font-size:18px;color:var(--muted)}
+.la{margin:30px 14px 0;background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:16px}
+.la .top{display:flex;justify-content:space-between;align-items:center}
+.la .lbl{color:var(--red);font-weight:900;text-transform:uppercase;font-size:15px}
+.la .t{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.prog{height:6px;border-radius:3px;background:var(--raised);margin-top:10px;overflow:hidden}.prog div{height:100%;background:var(--red)}
+.widget{margin:14px;background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:14px}
+.widget .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.widget .h b{color:var(--red);font-weight:900;text-transform:uppercase;font-size:17px}
+.widget .it{display:flex;gap:10px;align-items:center;padding:5px 0;font-size:14px;font-weight:600}
+.widget .it span{width:22px;height:22px;border-radius:50%;border:2px solid #fff;flex:none;cursor:pointer}
+.toast{position:absolute;left:20px;right:20px;bottom:150px;display:none;z-index:9}
+</style>
+</head>
+<body>
+<header>
+  <h1>NowNext preview</h1>
+  <p>Clickable mockup built in the same style as the SwiftUI code (not an Xcode render). Tap a task to open its bottom sheet. Try filling Now past its limit, capturing a brain dump, and starting a focus session.</p>
+</header>
+<div class="stage">
+  <div class="col">
+    <div class="phone" id="app">
+      <div class="island"></div>
+      <div class="status"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="nav" id="nav"></div>
+      <div class="screen" id="screen"></div>
+      <div id="bar"></div>
+      <nav class="tabs" id="tabs"></nav>
+      <div class="toast" id="toast"></div>
+      <div class="sheetwrap" id="sheetwrap" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
+    </div>
+    <div class="caption">The app (interactive)</div>
+  </div>
+  <div class="col">
+    <div class="phone lock">
+      <div class="island"></div>
+      <div class="status"><span></span><span>5G ▮▮▮</span></div>
+      <div class="date">Saturday, September 26</div>
+      <div class="bigtime">9:41</div>
+      <div class="la" id="la"></div>
+      <div class="widget" id="widget"></div>
+    </div>
+    <div class="caption">Lock Screen Live Activity and Now widget</div>
+  </div>
+</div>
+
+<script>
+const S={tab:'today',limit:3,timer:null,summary:null,open:null,minutes:25,focusTask:2,nextId:7,
+ tasks:[
+  {id:1,t:'Reply to Coach Miller’s email',slot:'now',est:10,done:false,steps:[],tracked:0},
+  {id:2,t:'Draft the proposal intro',slot:'now',est:30,done:false,steps:[{t:'Open the doc',d:true},{t:'Write 3 bullet points',d:false},{t:'Turn bullets into a paragraph',d:false}],tracked:720},
+  {id:3,t:'Book oil change',slot:'next',est:5,done:false,steps:[],tracked:0},
+  {id:4,t:'Clean out garage shelf',slot:'later',est:null,done:false,steps:[],tracked:0},
+  {id:5,t:'Order printer ink',slot:'inbox',est:null,done:false,steps:[],tracked:0},
+  {id:6,t:'Take vitamins',slot:'now',est:null,done:true,steps:[],tracked:0}]};
+const NAMES={inbox:'Brain Dump',now:'Now',next:'Next',later:'Later'};
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const open=s=>S.tasks.filter(t=>!t.done&&t.slot===s);
+const byId=id=>S.tasks.find(t=>t.id===id);
+const ICON={
+ bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+ tray:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3v10m-4-4 4 4 4-4M3 14h5l1 3h6l1-3h5v6H3z"/></svg>',
+ timer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>',
+ chart:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="6" width="4" height="15" rx="1"/><rect x="17" y="9" width="4" height="12" rx="1"/></svg>',
+ gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2m10-10 2-2"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" width="17" height="17" fill="#F6C21C"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#F6C21C" stroke-width="2.4"/></svg>',
+ star:'<svg viewBox="0 0 24 24" width="11" height="11" fill="#F6C21C"><path d="m12 2 3 7 7 .6-5.3 4.7L18.3 22 12 18l-6.3 4 1.6-7.7L2 9.6 9 9z"/></svg>'};
+
+function shield(size){
+  const w=size,h=size*1.15;
+  const sp=(x,y,W,H)=>`M${x+.5*W},${y} Q${x+.78*W},${y+.11*H} ${x+W},${y+.14*H} L${x+W},${y+.5*H} Q${x+.97*W},${y+.84*H} ${x+.5*W},${y+H} Q${x+.03*W},${y+.84*H} ${x},${y+.5*H} L${x},${y+.14*H} Q${x+.22*W},${y+.11*H} ${x+.5*W},${y} Z`;
+  const ins=k=>sp(k,k*1.15,w-2*k,h-2*k*1.15);
+  const b=w*.1,g=w*.065,bx=w*.27,by=h*.29;
+  const bolt=[[.15,-.5],[-.25,.05],[0,.05],[-.15,.5],[.25,-.05],[0,-.05]].map(([x,y])=>`${w*.66+x*w*.4},${h*.64+y*w*.4}`).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${sp(0,0,w,h)}" fill="#fff"/><path d="${ins(w*.06)}" fill="#050505"/><path d="${ins(w*.12)}" fill="#E3120B"/><path d="${ins(w*.15)}" fill="#050505"/>
+  <rect x="${bx}" y="${by}" width="${w*.46}" height="${b}" rx="${b/2}" fill="#E3120B"/><rect x="${bx}" y="${by+b+g}" width="${w*.34}" height="${b}" rx="${b/2}" fill="#fff"/><rect x="${bx}" y="${by+2*(b+g)}" width="${w*.22}" height="${b}" rx="${b/2}" fill="#fff"/>
+  <polygon points="${bolt}" fill="#F6C21C" stroke="#000" stroke-width="${w*.05}" stroke-linejoin="round" paint-order="stroke"/></svg>`;
+}
+function rail(f,t,label){let h='<i class="cap"></i>';for(let i=0;i<t;i++)h+=`<i class="${i<f?'f':''}"></i>`;return `<div class="rail"><div class="bars">${h}<i class="cap"></i></div><span>${label}</span></div>`}
+function callout(title,msg,icon){return `<div class="callout">${icon||ICON.lock}<div><div class="h">${title}</div><div class="m">${msg}</div></div></div>`}
+function toast(title,msg){const t=$('#toast');t.innerHTML=callout(title,msg);t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',3000)}
+
+function move(id,slot){if(slot==='now'&&open('now').length>=S.limit){toast('Now is full',`You've got ${S.limit} things in Now. Finish one or move one back to Next first.`);return}byId(id).slot=slot;render()}
+function toggle(id){const t=byId(id);t.done=!t.done;render()}
+function detail(t){const p=[];if(t.steps.length)p.push(`${t.steps.filter(s=>s.d).length}/${t.steps.length} steps`);if(t.est)p.push(`Guess ${t.est}m`);if(t.tracked>=60)p.push(`Focused ${Math.round(t.tracked/60)}m`);return p.join(' · ')}
+function row(t,moves){
+  const mv=(moves||[]).map(s=>`<button class="mv ${s==='now'?'red':''}" onclick="move(${t.id},'${s}')">${NAMES[s]}</button>`).join('');
+  const d=detail(t);
+  return `<div class="card row"><button class="plate ${t.done?'on':''}" aria-label="Mark done" onclick="toggle(${t.id})">${t.done?'✓':''}</button>
+  <div class="txt" onclick="openSheet(${t.id})"><div class="t ${t.done?'done':''}">${esc(t.t)}</div>${d?`<div class="d">${d}</div>`:''}</div>${mv}<span class="chev">›</span></div>`;
+}
+
+function today(){
+  const now=open('now'),next=open('next'),later=open('later'),done=S.tasks.filter(t=>t.done);
+  let h=`<div class="brand">${shield(84)}<div class="word">NowNext</div><div class="tag">${ICON.star}in Progress${ICON.star}</div></div>`;
+  h+=`<div class="label">Now · ${now.length} of ${S.limit}</div>`;
+  h+=now.length?now.map(t=>row(t,['next'])).join(''):`<div class="card" style="padding:16px"><div style="font-size:19px;font-weight:800;text-transform:uppercase">Nothing in Now yet.</div><div class="muted">Pick up to ${S.limit} things from Next or your Brain Dump.</div></div>`;
+  if(now.length>=S.limit)h+=callout('Now is full',"That's the point. Finish one before adding another.");
+  if(next.length)h+=`<div class="label">Next · ${next.length}</div>`+next.map(t=>row(t,['now'])).join('');
+  if(later.length)h+=`<div class="label">Later · ${later.length}</div>`+later.map(t=>row(t,['now'])).join('');
+  if(done.length)h+=`<div class="label" style="display:flex;gap:6px;align-items:center">${ICON.star}Done today · ${done.length}</div>`+done.map(t=>row(t)).join('');
+  return h;
+}
+function todayBar(){return `<div class="bar"><button class="btn secondary" onclick="go('focus')">Focus</button><button class="btn primary" onclick="go('dump')">＋ Add task</button></div>`}
+
+function dump(){
+  const inbox=open('inbox');
+  let h=`<div class="title">Brain Dump</div><div class="card" style="margin-top:10px"><textarea id="ta" placeholder="What's on your mind?" oninput="dumpCount()"></textarea></div>
+  <div class="muted" style="margin:8px 0">Type anything. One thought per line. Don't organize yet.</div>`;
+  h+=inbox.length?`<div class="label">To sort · ${inbox.length}</div>`+inbox.map(t=>row(t,['now','next'])).join('')
+    :`<div class="card row"><div class="icontile" style="color:var(--muted)">${ICON.tray.replace('<svg','<svg width="20" height="20"')}</div><div><div style="font-size:19px;font-weight:800;text-transform:uppercase">Your head is clear</div><div class="muted">Anything you capture waits here until you sort it.</div></div></div>`;
+  return h;
+}
+function dumpBar(){return `<div class="bar"><button class="btn primary" id="cap" onclick="capture()" disabled>↓ Capture</button></div>`}
+function parse(txt){return txt.split(/\n/).map(l=>{let s=l.trim(),c=true;while(c){c=false;for(const p of['[ ]','[x]','- ','* ','• ']){if(s.startsWith(p)){s=s.slice(p.length).trim();c=true}}const m=s.match(/^\d{1,3}[.)]\s+/);if(m){s=s.slice(m[0].length);c=true}}return s.slice(0,200)}).filter(Boolean)}
+function dumpCount(){const n=parse($('#ta').value).length;const b=$('#cap');b.disabled=!n;b.textContent=n>1?`↓ Capture ${n}`:'↓ Capture'}
+function capture(){parse($('#ta').value).forEach(t=>S.tasks.push({id:S.nextId++,t,slot:'inbox',est:null,done:false,steps:[],tracked:0}));render()}
+
+function pie(frac,color,size){
+  const f=Math.max(0,Math.min(1,frac)),r=108,c=110;let w='';
+  if(f>=.9999)w=`<circle cx="${c}" cy="${c}" r="${r}" fill="${color}"/>`;
+  else if(f>0){const a=-Math.PI/2+2*Math.PI*f;w=`<path d="M${c},${c} L${c},${c-r} A${r},${r} 0 ${f>.5?1:0} 1 ${c+r*Math.cos(a)},${c+r*Math.sin(a)} Z" fill="${color}"/>`}
+  return `<svg class="pie" style="width:${size}px;height:${size}px" viewBox="0 0 220 220" aria-hidden="true"><circle cx="${c}" cy="${c}" r="${r}" fill="#141414"/>${w}<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="#fff" stroke-width="2"/><circle cx="${c}" cy="${c}" r="8" fill="#050505" stroke="#fff" stroke-width="2"/></svg>`;
+}
+const fmt=s=>{s=Math.ceil(s);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
+function remaining(){const T=S.timer;return Math.max(0,T.planned-(T.acc+(T.running?(Date.now()-T.seg)/1000*30:0)))}
+function focus(){
+  if(S.timer){const T=S.timer,rem=remaining(),task=byId(T.task),step=task&&task.steps.find(s=>!s.d);
+    return `<div class="label">${T.running?'Focusing':'Paused'}</div>${task?`<div style="font-size:19px;font-weight:800;text-transform:uppercase">${esc(task.t)}</div>`:''}
+    ${pie(rem/T.planned,T.running?'#E3120B':'#9A9A9A',250)}<div class="clock">${fmt(rem)}</div>
+    ${step?`<div class="card row" style="margin-top:14px"><button class="plate" onclick="stepDone()"></button><div><div class="label" style="margin:0">Next step</div><div class="t" style="font-size:17px;font-weight:600">${esc(step.t)}</div></div></div>`:''}
+    <button class="btn secondary" style="width:100%;margin-top:8px" onclick="S.timer.planned+=300;render()">＋ Add 5 minutes</button>
+    <div class="muted" style="text-align:center;margin-top:10px;font-size:13px">Preview runs at 30× speed.</div>`}
+  if(S.summary){const s=S.summary;return `<div style="text-align:center;margin-top:24px">${shield(72)}</div><div style="font-size:40px;font-weight:900;text-transform:uppercase;text-align:center;line-height:1.05;margin:12px 0 16px">Nice. That counts.</div>
+    <div class="card stat"><div class="v">${Math.max(1,Math.round(s.sec/60))}m</div><div class="l">Focused this session</div></div>${s.title?`<div class="chips"><span class="chip">◎ ${esc(s.title)}</span></div>`:''}
+    <button class="btn secondary" style="width:100%;margin-top:10px" onclick="S.minutes=5;S.focusTask=S.summary.task;S.summary=null;start()">Keep going: 5 more minutes</button>`}
+  const cands=[...open('now'),...open('next')],sel=S.tasks.find(t=>t.id===S.focusTask&&!t.done),step=sel&&sel.steps.find(s=>!s.d);
+  return `<div class="title">Focus</div><div class="label">Working on</div>
+    <div class="card row" style="position:relative"><div class="icontile" style="color:var(--red)">${ICON.timer.replace('<svg','<svg width="20" height="20"')}</div><div style="flex:1"><div class="t" style="font-size:17px;font-weight:600">${sel?esc(sel.t):'Just focus (no task)'}</div>${step?`<div class="d" style="color:var(--muted);font-size:14px">First step: ${esc(step.t)}</div>`:''}</div><span class="chev">⇅</span>
+    <select style="position:absolute;inset:0;opacity:0;cursor:pointer" onchange="S.focusTask=+this.value||null;const t=byId(S.focusTask);if(t&&t.est)S.minutes=Math.max(5,Math.min(90,t.est));render()"><option value="">Just focus (no task)</option>${cands.map(t=>`<option value="${t.id}" ${sel&&sel.id===t.id?'selected':''}>${esc(t.t)}</option>`).join('')}</select></div>
+    <div class="label">How long</div><div class="tiles">${[5,10,15,25,45].map(m=>`<button class="tile ${S.minutes===m?'on':''}" onclick="S.minutes=${m};render()">${m}m</button>`).join('')}</div>
+    ${sel&&sel.est?`<div class="chips"><span class="chip">Your guess: ${sel.est}m</span></div>`:''}
+    ${pie(1,'#E3120B',190)}<div class="muted" style="text-align:center">Short is fine. Starting is the hard part.</div>`;
+}
+function focusBar(){
+  if(S.timer)return `<div class="bar"><button class="btn secondary" onclick="endFocus()">End</button>${S.timer.running?`<button class="btn primary" onclick="pause()">❚❚ Pause</button>`:`<button class="btn primary" onclick="resume()">▶ Resume</button>`}</div>`;
+  if(S.summary){const t=S.summary.task&&byId(S.summary.task);return `<div class="bar"><button class="btn secondary" onclick="S.summary=null;render()">Take a break</button>${t&&!t.done?`<button class="btn primary" onclick="toggle(${t.id});S.summary=null;render()">Mark done</button>`:''}</div>`}
+  return `<div class="bar"><button class="btn primary" onclick="start()">▶ Start ${S.minutes}-min focus</button></div>`;
+}
+function start(){S.timer={planned:S.minutes*60,acc:0,seg:Date.now(),running:true,task:S.focusTask};S.tab='focus';render()}
+function pause(){const T=S.timer;T.acc+=(Date.now()-T.seg)/1000*30;T.running=false;render()}
+function resume(){S.timer.seg=Date.now();S.timer.running=true;render()}
+function endFocus(){const T=S.timer,sec=T.planned-remaining(),task=byId(T.task);if(task)task.tracked+=sec;S.summary={sec,task:T.task,title:task?task.t:''};S.timer=null;render()}
+function stepDone(){const t=byId(S.timer.task),s=t.steps.find(s=>!s.d);if(s)s.d=true;render()}
+
+function insights(){
+  const mins=[20,45,0,30,55,25,40],mx=55;
+  return `<div class="title">Insights</div><div class="stats" style="margin-top:10px"><div class="card stat"><div class="v">3h 35m</div><div class="l">Focused, last 7 days</div></div><div class="card stat"><div class="v">${14+S.tasks.filter(t=>t.done).length}</div><div class="l">Done, last 7 days</div></div></div>
+  <div class="label">Focus minutes</div><div class="card" style="padding:16px"><div style="display:flex;align-items:flex-end;gap:10px;height:140px;border-bottom:1px solid var(--line)">${mins.map(m=>`<div style="flex:1;height:${m/mx*100}%;background:var(--red);border-radius:3px 3px 0 0"></div>`).join('')}</div><div style="display:flex;gap:10px;margin-top:6px">${'SMTWTFS'.split('').map(d=>`<span style="flex:1;text-align:center;font-size:12px;color:var(--muted)">${d}</span>`).join('')}</div></div>
+  <div class="label">Your time sense</div><div class="card" style="padding:16px"><div style="font-size:26px;font-weight:900;color:var(--red)">+40%</div><div>Tasks take you about 40% longer than you guess.</div><div class="muted" style="margin-top:6px">If it feels like 30 minutes, plan for about 40.</div></div>
+  <div class="muted" style="margin-top:10px;font-size:13px">Pro feature shown with sample data.</div>`;
+}
+function settings(){
+  const rowS=(ic,t,d,col)=>`<div class="card row"><div class="icontile" style="color:${col||'#fff'}">${ic}</div><div style="flex:1"><div class="t" style="font-size:17px;font-weight:600">${t}</div>${d?`<div style="color:var(--muted);font-size:14px">${d}</div>`:''}</div><span class="chev">›</span></div>`;
+  return `<div class="title">Settings</div><div class="label">NowNext Pro</div>${rowS(ICON.star.replace('11','20').replace('11','20'),'Unlock NowNext Pro','Insights and time-sense calibration. One-time purchase.')}
+  <div class="label">Planner</div><div class="card" style="padding:16px"><div style="font-size:17px;font-weight:600;margin-bottom:12px">Max tasks in Now</div><div class="tiles">${[1,2,3,4,5].map(n=>`<button class="tile ${S.limit===n?'on':''}" onclick="S.limit=${n};render()">${n}</button>`).join('')}</div><div class="muted" style="margin-top:10px">Three is a good start. Fewer things in Now means less overwhelm and more finishing.</div></div>
+  <div class="label">About</div>${rowS('?','Help & Support')}${rowS('i','Privacy Policy','No accounts. No tracking. Data stays on this device.')}
+  ${callout('Not medical advice','NowNext is a planning and focus tool. It is not a medical device and does not diagnose or treat ADHD or any other condition.')}`;
+}
+
+function openSheet(id){S.open=id;renderSheet();$('#sheetwrap').style.display='block'}
+function closeSheet(){S.open=null;$('#sheetwrap').style.display='none';render()}
+function renderSheet(){
+  const t=byId(S.open);if(!t)return;
+  const chips=[`<span class="chip">${t.slot==='now'?'<svg viewBox="0 0 24 24" width="15" height="15" fill="#F6C21C" style="vertical-align:-2px"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> ':''}${NAMES[t.slot]}</span>`];
+  if(t.est)chips.push(`<span class="chip">Guess ${t.est}m</span>`);if(t.tracked>=60)chips.push(`<span class="chip">Focused ${Math.round(t.tracked/60)}m</span>`);
+  $('#sheet').innerHTML=`<div class="grab"></div><div class="shead"><h2>${t.done?'Done':'Task'}</h2><button class="x" aria-label="Close" onclick="closeSheet()">✕</button></div>
+  <div class="screen"><div class="card" style="padding:16px;font-size:17px;font-weight:600">${esc(t.t)}</div><div class="chips">${chips.join('')}</div>
+  <div class="label">Where it lives</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${['inbox','now','next','later'].map(s=>`<button class="tile ${t.slot===s?'on':''}" onclick="sheetMove('${s}')">${NAMES[s]}</button>`).join('')}</div>
+  <div class="label">Tiny steps · ${t.steps.filter(s=>s.d).length}/${t.steps.length}</div><div class="card">${t.steps.map((s,i)=>`<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-bottom:1px solid var(--line)"><button class="plate ${s.d?'on':''}" onclick="byId(${t.id}).steps[${i}].d=!byId(${t.id}).steps[${i}].d;renderSheet()">${s.d?'✓':''}</button><span style="font-weight:600;${s.d?'color:var(--muted);text-decoration:line-through':''}">${esc(s.t)}</span></div>`).join('')}
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 12px"><input id="stepin" placeholder="${t.steps.length?'Add a step…':'First tiny step…'}" style="flex:1;background:transparent;border:none;color:#fff;font-size:16px;outline:none" onkeydown="if(event.key==='Enter')addStep()"><button class="plate on" style="background:var(--red)" onclick="addStep()">＋</button></div></div>
+  <div class="label">Time guess</div><div class="tiles" style="overflow-x:auto">${[null,5,10,15,30,45,60].map(m=>`<button class="tile ${t.est===m?'on':''}" style="min-width:64px" onclick="byId(${t.id}).est=${m};renderSheet()">${m?m+'m':'None'}</button>`).join('')}</div>
+  <div class="stats" style="margin-top:10px"><div class="card stat"><div class="v">${Math.round(t.tracked/60)}m</div><div class="l">Focused so far</div></div><div class="card stat"><div class="v">${t.est?t.est+'m':'–'}</div><div class="l">Your guess</div></div></div></div>
+  <div class="bar" style="background:var(--surface)">${t.done?'':`<button class="btn secondary" onclick="S.focusTask=${t.id};closeSheet();go('focus')">Focus</button>`}<button class="btn primary" onclick="toggle(${t.id});renderSheet()">${t.done?'Reopen':'Mark done'}</button></div>`;
+}
+function sheetMove(s){const t=byId(S.open);if(s==='now'&&t.slot!=='now'&&open('now').length>=S.limit){toast('Now is full',`You've got ${S.limit} things in Now. Finish one first.`);return}t.slot=s;renderSheet();render()}
+function addStep(){const v=$('#stepin').value.trim();if(v){byId(S.open).steps.push({t:v,d:false});renderSheet()}}
+
+function go(tab){S.tab=tab;render()}
+function renderNav(){
+  if(S.tab==='focus'&&S.timer){const T=S.timer,p=1-remaining()/T.planned;$('#nav').innerHTML=rail(Math.floor(p*10),10,`${fmt(remaining())} left`);return}
+  const n=open('now').length;$('#nav').innerHTML=rail(Math.min(n,S.limit),S.limit,`Now ${n} of ${S.limit}`);
+}
+function renderTabs(){const T=[['today','bolt','Today'],['dump','tray','Brain Dump'],['focus','timer','Focus'],['insights','chart','Insights'],['settings','gear','Settings']];
+  $('#tabs').innerHTML=T.map(([k,i,l])=>`<button class="tab ${S.tab===k?'on':''}" onclick="go('${k}')">${ICON[i]}${l}</button>`).join('')}
+function renderLock(){
+  const now=open('now');
+  $('#widget').innerHTML=`<div class="h"><b><svg viewBox="0 0 24 24" width="15" height="15" fill="#F6C21C" style="vertical-align:-2px"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Now</b><span style="color:var(--muted);font-weight:800;font-size:13px">✓ ${S.tasks.filter(t=>t.done).length}</span></div>`+(now.length?now.slice(0,3).map(t=>`<div class="it"><span onclick="toggle(${t.id})" title="Mark done"></span>${esc(t.t)}</div>`).join(''):'<div class="muted">Open NowNext and pick up to three.</div>');
+  if(S.timer){const T=S.timer,rem=remaining(),task=byId(T.task);$('#la').innerHTML=`<div class="top"><span class="lbl">${T.running?'Focusing':'❚❚ Paused'}</span><span class="t">${fmt(rem)}</span></div>${task?`<div style="margin-top:6px;font-weight:600">${esc(task.t)}</div>`:''}<div class="prog"><div style="width:${rem/T.planned*100}%;${T.running?'':'background:var(--gray)'}"></div></div>`}
+  else $('#la').innerHTML='<div class="muted">Start a focus session in the app to see the Live Activity here.</div>';
+}
+function render(){
+  $('#screen').innerHTML={today,dump,focus,insights,settings}[S.tab]();
+  $('#bar').innerHTML=({today:todayBar,dump:dumpBar,focus:focusBar}[S.tab]||(()=>S.tab==='insights'?'':''))();
+  renderNav();renderTabs();renderLock();
+}
+setInterval(()=>{if(S.timer&&S.timer.running){if(remaining()<=0)endFocus();else{if(S.tab==='focus')$('#screen').innerHTML=focus();renderNav();renderLock()}}},250);
+render();
+</script>
+</body>
+</html>
