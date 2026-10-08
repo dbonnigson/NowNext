@@ -9,7 +9,7 @@ enum AppGroup {
 /// One SwiftData store shared by the app, its widgets and App Intents.
 /// Lives in the App Group container so the widget extension can read it.
 enum SharedModelContainer {
-    static let schema = Schema([TaskItem.self, TaskStep.self, FocusSession.self])
+    static let schema = Schema([TaskItem.self, TaskStep.self, FocusSession.self, Routine.self, UpcomingEvent.self])
 
     static let shared: ModelContainer = makeContainer()
 
@@ -21,8 +21,12 @@ enum SharedModelContainer {
             groupContainer: .identifier(AppGroup.identifier),
             cloudKitDatabase: .none
         )
-        if let container = try? ModelContainer(for: schema, configurations: [grouped]) {
-            return container
+        do {
+            return try ModelContainer(for: schema, configurations: [grouped])
+        } catch {
+            // Visible in Xcode's console. If you ever see this after a schema change,
+            // add a VersionedSchema + SchemaMigrationPlan before shipping.
+            print("NowNext: App Group store failed to open: \(error)")
         }
 
         // 2. Fallback: app-private store (e.g. App Group not provisioned yet).

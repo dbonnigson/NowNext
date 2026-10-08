@@ -153,6 +153,12 @@ enum TaskStore {
         for task in (try? context.fetch(FetchDescriptor<TaskItem>())) ?? [] {
             context.delete(task) // steps cascade
         }
+        for routine in (try? context.fetch(FetchDescriptor<Routine>())) ?? [] {
+            context.delete(routine)
+        }
+        for event in (try? context.fetch(FetchDescriptor<UpcomingEvent>())) ?? [] {
+            context.delete(event)
+        }
         save(context)
     }
 

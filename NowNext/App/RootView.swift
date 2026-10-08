@@ -7,6 +7,8 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(FocusController.self) private var focus
     @Environment(Router.self) private var router
+    @Environment(PurchaseManager.self) private var purchases
+    @Environment(CalendarService.self) private var calendarService
 
     @AppStorage(SettingsKey.hasOnboarded) private var hasOnboarded = false
 
@@ -30,9 +32,9 @@ struct RootView: View {
                 .tabItem { Label("Focus", systemImage: focus.isActive ? "timer.circle.fill" : "timer") }
                 .tag(Router.Tab.focus)
 
-            InsightsView()
-                .tabItem { Label("Insights", systemImage: "chart.bar.fill") }
-                .tag(Router.Tab.insights)
+            PlanView()
+                .tabItem { Label("Plan", systemImage: "calendar.badge.clock") }
+                .tag(Router.Tab.plan)
 
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
@@ -41,6 +43,12 @@ struct RootView: View {
         .tint(Theme.text)
         .preferredColorScheme(.dark)
         .sensoryFeedback(.impact(weight: .light), trigger: router.tab)
+        .task {
+            refreshPlanData()
+        }
+        .onChange(of: purchases.isPro) { _, _ in
+            refreshPlanData()
+        }
         .task {
             // Once a second, let the focus timer wrap up a finished session.
             while !Task.isCancelled {
@@ -51,6 +59,7 @@ struct RootView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 focus.tick(context: context)
+                refreshPlanData()
             } else if phase == .background {
                 WidgetRefresher.reload()
             }
@@ -75,6 +84,14 @@ struct RootView: View {
             }
             .preferredColorScheme(.dark)
         }
+    }
+
+    /// Pro: create today's routine tasks and reload calendar events.
+    private func refreshPlanData() {
+        guard purchases.isPro else { return }
+        RoutineStore.spawnDueTasks(context: context)
+        RoutineStore.pruneOldEvents(context: context)
+        calendarService.refresh()
     }
 
     /// Black tab bar with a thin top divider; selected items white, others muted.

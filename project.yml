@@ -35,6 +35,7 @@ targets:
         LSApplicationCategoryType: public.app-category.productivity
         ITSAppUsesNonExemptEncryption: false
         NSSupportsLiveActivities: true
+        NSCalendarsFullAccessUsageDescription: "NowNext shows your upcoming events as a countdown so you can see how much time you have. Your calendar is only read on this iPhone and never leaves it."
         UILaunchScreen:
           UIColorName: LaunchBackground
         UIApplicationSceneManifest:

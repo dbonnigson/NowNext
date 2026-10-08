@@ -8,6 +8,8 @@ enum SettingsKey {
     static let dailyReminderMinutes = "dailyReminderMinutes" // minutes after midnight
     static let isProCached = "isProCached"
     static let focusState = "focusState"
+    static let upcomingMode = "upcomingMode"     // "countdown" | "calendar"
+    static let calendarScope = "calendarScope"   // "month" | "week" | "day"
 }
 
 enum AppLinks {

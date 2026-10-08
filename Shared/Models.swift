@@ -43,6 +43,8 @@ final class TaskItem {
     var estimateMinutes: Int?
     /// Total focused seconds recorded against this task by the focus timer.
     var trackedSeconds: Int = 0
+    /// Set when this task was created by a recurring Routine.
+    var routineID: UUID?
 
     @Relationship(deleteRule: .cascade, inverse: \TaskStep.task)
     var steps: [TaskStep] = []
@@ -111,5 +113,53 @@ final class FocusSession {
         self.plannedSeconds = plannedSeconds
         self.focusedSeconds = focusedSeconds
         self.task = task
+    }
+}
+
+/// A task that comes back on a schedule (Pro).
+/// Each day it's due, one copy lands in "Next" (never more than one open copy).
+@Model
+final class Routine {
+    var uuid: UUID = UUID()
+    var title: String = ""
+    var createdAt: Date = Date()
+    /// First day the routine can occur.
+    var startDate: Date = Date()
+    /// "daily", "weekdays", "weekly", "monthly", "everyNDays"
+    var cadenceRaw: String = "daily"
+    /// Weekly: comma-separated Calendar weekdays (1 = Sunday … 7 = Saturday).
+    var weekdaysRaw: String = ""
+    /// Monthly: day of month (clamped to the month's last day).
+    var monthDay: Int = 1
+    /// Every-N-days interval.
+    var intervalDays: Int = 2
+    var estimateMinutes: Int?
+    var isPaused: Bool = false
+    /// Day a task was last created from this routine (prevents duplicates).
+    var lastSpawnedDay: Date?
+
+    init(title: String, startDate: Date = Date()) {
+        self.uuid = UUID()
+        self.title = title
+        self.createdAt = Date()
+        self.startDate = startDate
+    }
+}
+
+/// An event the user adds by hand (calendar events are read live, not stored).
+@Model
+final class UpcomingEvent {
+    var uuid: UUID = UUID()
+    var title: String = ""
+    var date: Date = Date()
+    var isAllDay: Bool = false
+    var createdAt: Date = Date()
+
+    init(title: String, date: Date, isAllDay: Bool) {
+        self.uuid = UUID()
+        self.title = title
+        self.date = date
+        self.isAllDay = isAllDay
+        self.createdAt = Date()
     }
 }

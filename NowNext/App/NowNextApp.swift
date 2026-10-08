@@ -7,6 +7,7 @@ struct NowNextApp: App {
     @State private var purchases = PurchaseManager()
     @State private var focus = FocusController()
     @State private var router = Router()
+    @State private var calendar = CalendarService()
 
     init() {
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
@@ -18,6 +19,7 @@ struct NowNextApp: App {
                 .environment(purchases)
                 .environment(focus)
                 .environment(router)
+                .environment(calendar)
         }
         .modelContainer(SharedModelContainer.shared)
     }
@@ -28,7 +30,7 @@ struct NowNextApp: App {
 @Observable
 final class Router {
     enum Tab: Hashable {
-        case today, brainDump, focus, insights, settings
+        case today, brainDump, focus, plan, settings
     }
 
     var tab: Tab = .today

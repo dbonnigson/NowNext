@@ -41,8 +41,9 @@ struct PaywallView: View {
                         .multilineTextAlignment(.center)
 
                     SectionLabel("What you get")
-                    feature("chart.bar.fill", "Insights", "Focus minutes by day and tasks finished each week.")
-                    feature("scope", "Time-sense calibration", "How your time guesses compare with reality, plus a personal multiplier for planning.")
+                    feature("hourglass", "Upcoming, as a countdown", "Your calendar shown as time left (45 min, 3 days, 2 weeks), not another grid of dates.")
+                    feature("repeat", "Routines", "Tasks that come back on their own. Missed days never pile up.")
+                    feature("chart.bar.fill", "Insights", "Focus by day, plus how your time guesses compare with reality.")
                     feature("heart.fill", "Support an indie app", "Keeps NowNext ad-free, account-free and private.")
 
                     Text("Everything else stays free: Brain Dump, Today, Tiny Steps, the focus timer, widgets and Live Activities.")

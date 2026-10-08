@@ -33,7 +33,7 @@ struct SettingsView: View {
             }
             .screenBackground()
             .themedTabScreen()
-            .confirmationDialog("Delete all tasks and focus history?", isPresented: $confirmWipe, titleVisibility: .visible) {
+            .confirmationDialog("Delete all tasks, routines, events and focus history?", isPresented: $confirmWipe, titleVisibility: .visible) {
                 Button("Delete everything", role: .destructive) {
                     TaskStore.deleteEverything(context: context)
                 }
@@ -53,7 +53,7 @@ struct SettingsView: View {
         } else {
             Button { router.showPaywall = true } label: {
                 settingsRow("star.fill", String(localized: "Unlock NowNext Pro"),
-                            detail: String(localized: "Insights and time-sense calibration. One-time purchase."),
+                            detail: String(localized: "Upcoming countdown, Routines and Insights. One-time purchase."),
                             iconColor: Theme.yellow)
             }
             .buttonStyle(.plain)

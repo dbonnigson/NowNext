@@ -63,6 +63,8 @@ HOME SCREEN WIDGET
 • See your Now list and check things off without opening the app.
 
 NOWNEXT PRO (one-time purchase, no subscription)
+• Upcoming, as a countdown: your calendar shown as time left (45 min, 3 days, 2 weeks) instead of a grid of dates, with a 14-day horizon strip and one-tap prep tasks.
+• Routines: tasks that come back daily, on weekdays, weekly or monthly. Missed days never pile up.
 • Insights: focus minutes by day and tasks finished each week.
 • Time-sense calibration: learn how your guesses compare with reality ("tasks take you about 40% longer than you think") and plan with a personal multiplier.
 
@@ -76,7 +78,7 @@ NowNext is a planning and focus tool. It is not a medical device and does not di
 ### What's New (v1.0.0)
 
 ```
-First release. Brain dump, Now/Next/Later, tiny steps, a visual focus timer with Live Activities, a Home Screen widget, and NowNext Pro insights.
+First release. Brain dump, Now/Next/Later, tiny steps, a visual focus timer with Live Activities, a Home Screen widget, and NowNext Pro (Upcoming countdown, Routines, Insights).
 ```
 
 ### URLs
@@ -101,9 +103,9 @@ These pages are in `/docs`. Turn on GitHub Pages (Settings → Pages → Deploy 
 | Price | Tier of your choice (the local `.storekit` file uses $4.99) |
 | Family Sharing | On (recommended) |
 | Display name | NowNext Pro |
-| Description (45 max) | `Insights and time-sense calibration` (35) |
+| Description (45 max) | `Countdown calendar, routines and insights` (41) |
 | Review screenshot | Screenshot of the paywall (Settings → Unlock NowNext Pro) |
-| Review notes | "Unlocks the Insights tab (focus history and time-estimate calibration). Core planner is free." |
+| Review notes | "Unlocks the Plan tab: Upcoming (calendar as countdown), Routines (recurring tasks) and Insights. Core planner is free." |
 
 Submit the IAP **with** the first app version (App Store Connect → the version page → In-App Purchases → add it). An IAP created but not attached to the version is the most common first-submission rejection for unlock-style apps.
 
@@ -112,6 +114,8 @@ Submit the IAP **with** the first app version (App Store Connect → the version
 ## 3. App Privacy ("nutrition label")
 
 Answer: **Data Not Collected.**
+
+Calendar events (Pro › Upcoming, optional) are read with EventKit and processed only on the device. They're never stored by NowNext or transmitted, so they are not "collected" under Apple's definition and the label stays the same. The permission string is `NSCalendarsFullAccessUsageDescription` in Info.plist.
 
 Why this is accurate:
 - No analytics, ads, crash-reporting or third-party SDKs are linked.
@@ -149,7 +153,8 @@ Capture from the iPhone 17 Pro Max simulator with ⌘S. Keep caption panels on t
 | 3 | Focus running: red disk ~60% full, big timer, next step card | **SEE TIME SHRINK** |
 | 4 | Task sheet with tiny steps, chips and a time guess | **BREAK IT INTO SILLY-SMALL STEPS** |
 | 5 | Lock Screen Live Activity + Now widget | **CHECK IT OFF FROM YOUR HOME SCREEN** |
-| 6 | Insights (Pro): stat tiles + calibration card | **LEARN HOW LONG THINGS REALLY TAKE** |
+| 6 | Plan › Upcoming (Pro): "Next up 2H 15M" hero + 14-day strip | **SEE HOW LONG YOU HAVE, NOT JUST THE DATE** |
+| 6b | Plan › Routines (Pro) | **ROUTINES THAT NEVER PILE UP** |
 | 7 | Settings: privacy row / "Not medical advice" callout | **NO ACCOUNT. NO ADS. STAYS ON YOUR PHONE.** |
 
 The first two carry most of the conversion.
@@ -171,7 +176,9 @@ How to reach every feature:
 - Widget: long-press Home Screen > + > NowNext > "Now".
 - Siri/Shortcuts: "Brain dump in NowNext".
 
-In-App Purchase: "NowNext Pro" (non-consumable) unlocks the Insights tab (focus history and time-estimate calibration). Open Insights or Settings > Unlock NowNext Pro. Restore Purchases is on the paywall and in Settings.
+In-App Purchase: "NowNext Pro" (non-consumable) unlocks the Plan tab: Upcoming (calendar shown as time-until), Routines (recurring tasks) and Insights. Open the Plan tab or Settings > Unlock NowNext Pro. Restore Purchases is on the paywall and in Settings.
+
+Calendar permission (full access, read-only use) is requested only when the user taps "Connect Calendar" in Plan > Upcoming. Events are shown as a countdown and never leave the device. Manual events can be added without granting it.
 
 Notifications permission is requested only when the user starts their first focus session or turns on the daily reminder, and is used only for local "time's up" and reminder notifications.
 

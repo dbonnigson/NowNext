@@ -1,10 +1,52 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    " " : {
+
+    },
+    "%@ · next one %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · next one %2$@"
+          }
+        }
+      }
+    },
+    "%@ · Paused" : {
+
+    },
     "%@ left" : {
 
     },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%@, %lld events" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$lld events"
+          }
+        }
+      }
+    },
     "%@, one-time purchase." : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld days" : {
 
     },
     "%lld min" : {
@@ -29,6 +71,9 @@
           }
         }
       }
+    },
+    "%lld of the next 14 days have events" : {
+
     },
     "%lld/%lld steps" : {
       "localizations" : {
@@ -80,6 +125,15 @@
     "Add a time guess to tasks and focus on them. After %lld, you'll see how your guesses compare with reality." : {
 
     },
+    "Add an event and NowNext shows how long you have until it, not just the date." : {
+
+    },
+    "Add event" : {
+
+    },
+    "Add routine" : {
+
+    },
     "Add step" : {
 
     },
@@ -92,10 +146,19 @@
     "Added %lld items to your brain dump." : {
 
     },
+    "Added in NowNext" : {
+
+    },
     "Added to your brain dump." : {
 
     },
+    "All day" : {
+
+    },
     "Anything you capture waits here until you sort it into Now, Next or Later." : {
+
+    },
+    "Back to today" : {
 
     },
     "Based on %lld tasks with a guess and at least 1 minute of focus." : {
@@ -110,6 +173,12 @@
     "Break big tasks into silly-small steps, guess the time, then watch it shrink on a visual timer." : {
 
     },
+    "Calendar" : {
+
+    },
+    "Calendar access is off" : {
+
+    },
     "Cancel" : {
 
     },
@@ -117,6 +186,9 @@
 
     },
     "Capture %lld" : {
+
+    },
+    "Check the mail" : {
 
     },
     "Choose up to three things for today. Just three." : {
@@ -128,10 +200,31 @@
     "Complete Task" : {
 
     },
+    "Connect Calendar" : {
+
+    },
+    "Countdown" : {
+
+    },
+    "Daily" : {
+
+    },
     "Daily “pick your Now”" : {
 
     },
+    "Date" : {
+
+    },
     "Day" : {
+
+    },
+    "Day %lld" : {
+
+    },
+    "Day of the month" : {
+
+    },
+    "Days" : {
 
     },
     "Delete" : {
@@ -140,13 +233,22 @@
     "Delete all data" : {
 
     },
-    "Delete all tasks and focus history?" : {
+    "Delete all tasks, routines, events and focus history?" : {
+
+    },
+    "Delete event" : {
 
     },
     "Delete everything" : {
 
     },
+    "Delete routine" : {
+
+    },
     "Delete task" : {
+
+    },
+    "Delete this routine?" : {
 
     },
     "Delete this task?" : {
@@ -161,7 +263,16 @@
     "Done, last 7 days" : {
 
     },
+    "due today" : {
+
+    },
     "Dump it all out" : {
+
+    },
+    "Edit routine" : {
+
+    },
+    "Empty the dishwasher" : {
 
     },
     "End" : {
@@ -171,6 +282,18 @@
 
     },
     "End this session?" : {
+
+    },
+    "Every" : {
+
+    },
+    "Every %lld days" : {
+
+    },
+    "Every day" : {
+
+    },
+    "Every few days" : {
 
     },
     "Everything else stays free: Brain Dump, Today, Tiny Steps, the focus timer, widgets and Live Activities." : {
@@ -185,13 +308,13 @@
     "Focus" : {
 
     },
-    "Focus by day" : {
+    "Focus by day and how your time guesses compare with reality." : {
+
+    },
+    "Focus by day, plus how your time guesses compare with reality." : {
 
     },
     "Focus minutes" : {
-
-    },
-    "Focus minutes by day and tasks finished each week." : {
 
     },
     "Focus minutes per day for the last 7 days" : {
@@ -218,6 +341,9 @@
     "Focusing" : {
 
     },
+    "free" : {
+
+    },
     "Get every task and worry out of your head. Paste a list and each line becomes a task. Sort later." : {
 
     },
@@ -225,6 +351,12 @@
 
     },
     "Guess %@" : {
+
+    },
+    "happening now" : {
+
+    },
+    "Happening now" : {
 
     },
     "Heads up" : {
@@ -236,22 +368,43 @@
     "How long" : {
 
     },
-    "How your time guesses compare with reality, plus a personal multiplier for planning." : {
+    "How often" : {
+
+    },
+    "How routines work" : {
 
     },
     "If it feels like 30 minutes, plan for about %lld." : {
+
+    },
+    "in %@" : {
+
+    },
+    "in %lld days" : {
+
+    },
+    "in %lld min" : {
+
+    },
+    "in %lld months" : {
+
+    },
+    "in %lld weeks" : {
+
+    },
+    "In 1 week" : {
+
+    },
+    "In 2 weeks" : {
+
+    },
+    "In 3 days" : {
 
     },
     "in Progress" : {
 
     },
     "Insights" : {
-
-    },
-    "Insights and time-sense calibration. One-time purchase." : {
-
-    },
-    "Insights is part of NowNext Pro, a one-time unlock." : {
 
     },
     "Just focus (no task)" : {
@@ -269,10 +422,16 @@
     "Later" : {
 
     },
+    "Less" : {
+
+    },
     "Less time" : {
 
     },
     "Loading price from the App Store…" : {
+
+    },
+    "Make a prep task" : {
 
     },
     "Mark done" : {
@@ -284,10 +443,25 @@
     "Max tasks in Now" : {
 
     },
+    "Min" : {
+
+    },
     "Minutes" : {
 
     },
-    "Minutes focused each day and tasks finished each week." : {
+    "Month" : {
+
+    },
+    "Monthly" : {
+
+    },
+    "Monthly on the %@" : {
+
+    },
+    "Months" : {
+
+    },
+    "More" : {
 
     },
     "More time" : {
@@ -296,13 +470,31 @@
     "Move to %@" : {
 
     },
+    "New event" : {
+
+    },
+    "New routine" : {
+
+    },
     "New task" : {
 
     },
     "Next" : {
 
     },
+    "next %@" : {
+
+    },
+    "Next 14 days" : {
+
+    },
     "Next step" : {
+
+    },
+    "Next up" : {
+
+    },
+    "Next week" : {
 
     },
     "Nice. That counts." : {
@@ -326,7 +518,16 @@
     "Notes (optional)" : {
 
     },
+    "Nothing coming up" : {
+
+    },
     "Nothing in Now yet." : {
+
+    },
+    "Nothing new shows up while it's paused." : {
+
+    },
+    "Nothing scheduled. Open time." : {
 
     },
     "Nothing to add." : {
@@ -372,7 +573,13 @@
     "OK" : {
 
     },
+    "On" : {
+
+    },
     "On target" : {
+
+    },
+    "On the day a routine is due, it shows up in Next. Miss a day? It doesn't pile up. You get one copy, never a stack." : {
 
     },
     "One gentle nudge a day." : {
@@ -381,16 +588,28 @@
     "Open Brain Dump (%lld)" : {
 
     },
+    "Open Settings" : {
+
+    },
     "Opens task details" : {
 
     },
     "Pause" : {
 
     },
+    "Pause this routine" : {
+
+    },
     "Paused" : {
 
     },
+    "Pay bills" : {
+
+    },
     "Pay once. Yours forever. No subscription." : {
+
+    },
+    "Pick at least one day" : {
 
     },
     "Pick three for Now" : {
@@ -402,7 +621,19 @@
     "Pick your Now" : {
 
     },
+    "Plan" : {
+
+    },
+    "Plan is part of NowNext Pro, a one-time unlock." : {
+
+    },
     "Planner" : {
+
+    },
+    "Prep: %@" : {
+
+    },
+    "Previous" : {
 
     },
     "Privacy Policy" : {
@@ -429,13 +660,13 @@
     "Put something in Now or Next to focus on it here." : {
 
     },
+    "Read-only. Your events stay on this iPhone." : {
+
+    },
     "Reminders" : {
 
     },
     "Remove step %@" : {
-
-    },
-    "Reopen" : {
 
     },
     "Restore" : {
@@ -447,7 +678,16 @@
     "Resume" : {
 
     },
-    "See how your time guesses compare with reality, so plans match your actual day." : {
+    "Routine" : {
+
+    },
+    "Routines" : {
+
+    },
+    "Save" : {
+
+    },
+    "See your calendar as a countdown" : {
 
     },
     "Settings" : {
@@ -469,6 +709,9 @@
 
     },
     "Start my dump" : {
+
+    },
+    "Starting soon" : {
 
     },
     "Step %lld of %lld" : {
@@ -493,10 +736,16 @@
     "Take a break" : {
 
     },
+    "Take out the trash" : {
+
+    },
     "Task" : {
 
     },
     "Task ID" : {
+
+    },
+    "Tasks it already created stay in your list." : {
 
     },
     "tasks measured" : {
@@ -505,10 +754,19 @@
     "Tasks take you about %@ longer than you guess." : {
 
     },
+    "Tasks that come back on their own: daily, weekdays, weekly or monthly. Missed days never pile up." : {
+
+    },
+    "Tasks that come back on their own. Missed days never pile up." : {
+
+    },
     "Terms of Use" : {
 
     },
     "Thanks for supporting NowNext." : {
+
+    },
+    "That's %@." : {
 
     },
     "That's the point. Finish one before adding another." : {
@@ -523,6 +781,9 @@
     "This can't be undone. Your data only lives on this device." : {
 
     },
+    "This week" : {
+
+    },
     "Thought" : {
 
     },
@@ -533,9 +794,6 @@
 
     },
     "Time guess" : {
-
-    },
-    "Time-sense calibration" : {
 
     },
     "Time's up" : {
@@ -550,10 +808,28 @@
     "Tiny steps. Visible time." : {
 
     },
+    "To go" : {
+
+    },
     "To sort" : {
 
     },
+    "today" : {
+
+    },
     "Today" : {
+
+    },
+    "tomorrow" : {
+
+    },
+    "Tomorrow" : {
+
+    },
+    "Try one" : {
+
+    },
+    "Turn it on in Settings › NowNext › Calendars to see your events here. You can still add events by hand." : {
 
     },
     "Type anything. One thought per line. Don't organize yet." : {
@@ -574,19 +850,61 @@
     "Unlocked" : {
 
     },
+    "Untitled event" : {
+
+    },
     "Untitled task" : {
+
+    },
+    "Upcoming" : {
+
+    },
+    "Upcoming countdown, Routines and Insights. One-time purchase." : {
+
+    },
+    "Upcoming, as a countdown" : {
 
     },
     "Version" : {
 
     },
+    "View" : {
+
+    },
+    "Water the plants" : {
+
+    },
+    "Week" : {
+
+    },
+    "Weekdays" : {
+
+    },
+    "Weekly" : {
+
+    },
+    "Weekly review" : {
+
+    },
+    "Weeks" : {
+
+    },
     "What needs doing?" : {
+
+    },
+    "What repeats?" : {
 
     },
     "What you get" : {
 
     },
+    "What's happening?" : {
+
+    },
     "What's on your mind?" : {
+
+    },
+    "When" : {
 
     },
     "Where it lives" : {
@@ -595,10 +913,19 @@
     "Working on" : {
 
     },
+    "Wrap up what you're doing and get ready now." : {
+
+    },
     "You finish about %@ faster than you guess." : {
 
     },
     "You've got %lld things in Now. Finish one or move one back to Next first." : {
+
+    },
+    "Your calendar shown as time left (45 min, 3 days, 2 weeks), not another grid of dates." : {
+
+    },
+    "Your calendar shown as time left: 45 min, 3 days, 2 weeks. Not another grid of dates." : {
 
     },
     "Your data" : {
@@ -617,6 +944,9 @@
 
     },
     "Your head is clear" : {
+
+    },
+    "Your routines" : {
 
     },
     "Your time sense" : {

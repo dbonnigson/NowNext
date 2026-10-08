@@ -19,7 +19,7 @@ Visual style: the "in Progress" brand (same system as *Gains in Progress*): blac
 | **Home Screen / Lock Screen widget**: Now list with tap-to-complete | `NowNextWidgets/NowWidget.swift`, `Shared/CompleteTaskIntent.swift` |
 | **Siri / Shortcuts**: "Brain dump in NowNext" | `Intents/AppShortcuts.swift` |
 | **Local notifications**: timer end, optional daily "pick your Now" reminder (permission asked in context) | `Services/NotificationService.swift` |
-| **NowNext Pro** (one-time IAP): Insights and time-sense calibration | `Services/PurchaseManager.swift`, `Features/Paywall`, `Features/Insights` |
+| **NowNext Pro** (one-time IAP), the **Plan** tab: Upcoming (calendar as countdown + 14-day strip), Routines (recurring tasks into Next, no pile-up), Insights | `Services/PurchaseManager.swift`, `Features/Paywall`, `Features/Plan`, `Services/CalendarService.swift`, `Services/RecurrenceLogic.swift`, `Services/Countdown.swift` |
 | Onboarding, empty states, Dark Mode, Dynamic Type, VoiceOver labels, 44pt targets | throughout |
 
 ## Build and run

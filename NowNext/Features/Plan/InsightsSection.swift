@@ -2,11 +2,8 @@ import Charts
 import SwiftData
 import SwiftUI
 
-/// Pro: focus history and personal time-estimate calibration.
-struct InsightsView: View {
-    @Environment(PurchaseManager.self) private var purchases
-    @Environment(Router.self) private var router
-
+/// Pro: focus history and personal time-estimate calibration (a section of the Plan tab).
+struct InsightsSection: View {
     @Query(sort: \FocusSession.endedAt, order: .reverse)
     private var sessions: [FocusSession]
 
@@ -16,30 +13,8 @@ struct InsightsView: View {
     @Query private var allTasks: [TaskItem]
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: Theme.spacingS) {
-                    ScreenTitle("Insights")
-                    if purchases.isPro {
-                        content
-                    } else {
-                        locked
-                    }
-                }
-                .padding(.horizontal, Theme.gutter)
-                .padding(.top, 8)
-                .padding(.bottom, Theme.spacingL)
-            }
-            .screenBackground()
-            .themedTabScreen()
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                if !purchases.isPro {
-                    BottomActionBar {
-                        Button("Unlock Pro") { router.showPaywall = true }
-                            .buttonStyle(.primary)
-                    }
-                }
-            }
+        VStack(alignment: .leading, spacing: Theme.spacingS) {
+            content
         }
     }
 
@@ -166,27 +141,5 @@ struct InsightsView: View {
         Text("Based on \(stats.sampleCount) tasks with a guess and at least 1 minute of focus.")
             .themeFont(.detail)
             .foregroundStyle(Theme.muted)
-    }
-
-    // MARK: Locked
-
-    @ViewBuilder
-    private var locked: some View {
-        Callout(title: "Pro feature", message: "Insights is part of NowNext Pro, a one-time unlock.")
-        SectionLabel("What you get")
-        OptionRow(title: String(localized: "Focus by day"),
-                  detail: String(localized: "Minutes focused each day and tasks finished each week."),
-                  showsChevron: false) {
-            IconTile(symbol: "chart.bar.fill", color: Theme.red)
-        }
-        .padding(.horizontal, 14)
-        .themeCard()
-        OptionRow(title: String(localized: "Time-sense calibration"),
-                  detail: String(localized: "See how your time guesses compare with reality, so plans match your actual day."),
-                  showsChevron: false) {
-            IconTile(symbol: "scope", color: Theme.red)
-        }
-        .padding(.horizontal, 14)
-        .themeCard()
     }
 }
